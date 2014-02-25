@@ -3,11 +3,11 @@
 
 #include "simulator.h"
 
-#include "vertex_se2.h"
-#include "vertex_point_xy.h"
-#include "edge_se2.h"
-#include "edge_se2_pointxy.h"
-#include "types_tutorial_slam2d.h"
+#include "vertex_se2.h" //机器人状态顶点
+#include "vertex_point_xy.h"  //路标顶点
+#include "edge_se2.h"        //惯性测量装置约束
+#include "edge_se2_pointxy.h"  //外部传感器约束
+#include "types_tutorial_slam2d.h" //注册自定义顶点
 
 #include "g2o/core/sparse_optimizer.h"
 #include "g2o/core/block_solver.h"
@@ -29,7 +29,7 @@ int main()
   SE2 sensorOffsetTransf(0.2, 0.1, -0.1);
   int numNodes = 300;
   Simulator simulator;
-  simulator.simulate(numNodes, sensorOffsetTransf);
+  simulator.simulate(numNodes, sensorOffsetTransf);//300个姿态，注意是一起产生的，不是边产生边优化的
 
   /*********************************************************************************
    * creating the optimization problem
@@ -55,6 +55,7 @@ int main()
 
   // adding the odometry to the optimizer
   // first adding all the vertices
+  // 可能考虑到算的是一个full SLAM，所以把所有东西都搁进去了，但在实际上只需要关键帧即可
   cerr << "Optimization: Adding robot poses ... ";
   for (size_t i = 0; i < simulator.poses().size(); ++i) {
     const Simulator::GridPose& p = simulator.poses()[i];
@@ -67,12 +68,13 @@ int main()
   cerr << "done." << endl;
 
   // second add the odometry constraints
+  // 这一步是在加边，误差由 EdgeSE2::computeError()计算
   cerr << "Optimization: Adding odometry measurements ... ";
   for (size_t i = 0; i < simulator.odometry().size(); ++i) {
     const Simulator::GridEdge& simEdge = simulator.odometry()[i];
 
     EdgeSE2* odometry = new EdgeSE2;
-    odometry->vertices()[0] = optimizer.vertex(simEdge.from);
+    odometry->vertices()[0] = optimizer.vertex(simEdge.from);//这里的from 和to 能指代顶点的id
     odometry->vertices()[1] = optimizer.vertex(simEdge.to);
     odometry->setMeasurement(simEdge.simulatorTransf);
     odometry->setInformation(simEdge.information);
@@ -81,6 +83,7 @@ int main()
   cerr << "done." << endl;
 
   // add the landmark observations
+  // 这一步是在加顶点哦
   cerr << "Optimization: add landmark vertices ... ";
   for (size_t i = 0; i < simulator.landmarks().size(); ++i) {
     const Simulator::Landmark& l = simulator.landmarks()[i];
@@ -123,6 +126,8 @@ int main()
   optimizer.optimize(10);
   cerr << "done." << endl;
 
+  //因为毕竟有300个结点同时在优化，所以比较影响速度
+  
   optimizer.save("tutorial_after.g2o");
 
   // freeing the graph memory

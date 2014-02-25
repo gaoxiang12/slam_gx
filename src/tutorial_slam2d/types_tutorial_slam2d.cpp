@@ -37,7 +37,7 @@ namespace g2o {
   bool init_tutorial_slam2d_types()
   {
     cerr << __PRETTY_FUNCTION__ << " called" << endl;
-    Factory* factory = Factory::instance();
+    Factory* factory = Factory::instance(); //工厂用来做类的注册处理，所以是单一模式。
     factory->registerType("TUTORIAL_VERTEX_SE2", new HyperGraphElementCreator<tutorial::VertexSE2>);
     factory->registerType("TUTORIAL_VERTEX_POINT_XY", new HyperGraphElementCreator<tutorial::VertexPointXY>);
 
