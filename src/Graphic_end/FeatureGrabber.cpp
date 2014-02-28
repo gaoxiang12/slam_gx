@@ -15,9 +15,13 @@ vector<KeyPoint> FeatureGrabber::GetKeyPoints()
     if (debug_info)
     {
         cout<<"grabbing features, feature name is "<<_featureName<<endl;
+        if (_rgb.empty())
+            cout<<"rgb is empty!"<<_rgb.rows<<","<<_rgb.cols<<endl;
     }
+    
     initModule_nonfree();
-    Ptr<FeatureDetector> detector = FeatureDetector::create("SIFT");
+    
+    Ptr<FeatureDetector> detector = FeatureDetector::create(_featureName);
 
     if (detector.empty())
     {

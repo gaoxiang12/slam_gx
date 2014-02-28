@@ -45,7 +45,6 @@ class FeatureGrabber: public FeatureGrabberBase
  FeatureGrabber(string featureName) : FeatureGrabberBase(featureName)
     {
         _featureName = featureName;
-        initModule_nonfree();
     }
     virtual void SetRGBDep(Mat& rgb, Mat& dep) {
         _rgb = rgb;

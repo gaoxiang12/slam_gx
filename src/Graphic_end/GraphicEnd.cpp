@@ -41,6 +41,7 @@ int GraphicEnd::run()
             break;
         Mat rgb = pImageReader->GetRGB();
         Mat dep = pImageReader->GetDep();
+        pFeatureGrabber->SetRGBDep(rgb, dep);
         vector<KeyPoint> keyPoints = pFeatureGrabber->GetKeyPoints();
         Mat desc = pFeatureGrabber->GetDescriptors();
         if (vision == true)
@@ -65,14 +66,17 @@ int GraphicEnd::run_once()
         return 0;
     Mat rgb = pImageReader->GetRGB();
     Mat dep = pImageReader->GetDep();
+    pFeatureGrabber->SetRGBDep(rgb, dep);
     vector<KeyPoint> keyPoints = pFeatureGrabber->GetKeyPoints();
     Mat desc = pFeatureGrabber->GetDescriptors();
     if (vision == true)
     {
         Mat image_with_keypoints;
         drawKeypoints(rgb, keyPoints, image_with_keypoints, Scalar::all(-1), 0);
-        imshow("slam_gx", rgb);
+        imshow("slam_gx", image_with_keypoints);
         waitKey(10000);
     }
+
+    
     return 1;
 }
