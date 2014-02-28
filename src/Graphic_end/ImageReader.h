@@ -56,7 +56,8 @@ class ImageReader: public ImageReaderBase
     
     // configure parameters
     string _data_source; //数据来源
-    string _feature_name;//特征名
+    string _detector_name;//特征相关：检测子名称
+    string _descriptor_name; //描述子名称
     int _start_index;    //起始索引
     int _end_index;      //终止索引
     int _grayscale;      //是否以灰度图读取

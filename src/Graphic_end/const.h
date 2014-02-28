@@ -3,6 +3,9 @@
  *************************************/
 #pragma once
 #include <string>
+#include <opencv2/core/core.hpp>
+
+using namespace cv;
 using namespace std;
 
 const bool debug_info = true; //是否输出调试信息
@@ -11,3 +14,10 @@ const bool vision = true;
 //////////////////////////////////////////
 // 图像特征点相关参数
 const int surf_minHessian = 400;
+
+//////////////////////////////////////////
+// Camera matrix
+const double camera_fx = 520.9, camera_fy = 521.0,
+    camera_cx = 325.1, camera_cy = 249.7, camera_factor = 5000.0;
+
+const double camera_matrix[3][3] = { { camera_fx, 0, camera_cx }, { 0, camera_fy ,camera_cy }, { 0, 0, 1 }};

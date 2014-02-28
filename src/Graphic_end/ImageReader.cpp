@@ -30,7 +30,8 @@ ImageReader::ImageReader(string parameter_file_addr)
 
     //直接从config中读信息即可
     config[ "data_source" ] >> _data_source;
-    config[ "feature_name" ] >> _feature_name;
+    config[ "detector_name" ] >> _detector_name;
+    config[ "descriptor_name" ] >> _descriptor_name;
     config[ "start_index" ] >> _start_index;
     config[ "end_index" ] >> _end_index;
     config[ "grayscale" ] >> _grayscale;
@@ -84,8 +85,10 @@ int ImageReader::Next()
 
 string ImageReader::GetParameters(string para_name) const
 {
-    if (para_name == string("feature_name"))
-        return _feature_name;
+    if (para_name == string("detector_name"))
+        return _detector_name;
+    if (para_name == string("descriptor_name"))
+        return _descriptor_name;
     if (para_name == string("data_source"))
         return _data_source;
 

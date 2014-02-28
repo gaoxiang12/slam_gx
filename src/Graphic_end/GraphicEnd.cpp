@@ -13,7 +13,9 @@ using namespace cv;
 GraphicEnd::GraphicEnd()
 {
     pImageReader = new ImageReader(parameter_file_addr);
-    pFeatureGrabber = new FeatureGrabber(pImageReader->GetParameters("feature_name"));
+    pFeatureGrabber = new FeatureGrabber(
+                                         pImageReader->GetParameters("detector_name"),
+                                         pImageReader->GetParameters("descriptor_name"));
 
     if (vision == true)
     {

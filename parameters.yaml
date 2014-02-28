@@ -1,7 +1,8 @@
 %YAML:1.0
 #path and data
 data_source: /home/y/code/dataset/slam
-feature_name: ORB
+detector_name: SIFT
+descriptor_name: SIFT
 start_index: 51
 end_index: 52
 grayscale: 1
