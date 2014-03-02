@@ -15,6 +15,9 @@ const bool vision = true;
 // 图像特征点相关参数
 const int surf_minHessian = 400;
 
+//匹配相关
+const double match_min_dist = 0.02;  //小于这个距离才算匹配成功
+
 //////////////////////////////////////////
 // Camera matrix
 const double camera_fx = 520.9, camera_fy = 521.0,

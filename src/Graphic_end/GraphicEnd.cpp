@@ -16,7 +16,8 @@ GraphicEnd::GraphicEnd()
     pFeatureGrabber = new FeatureGrabber(
                                          pImageReader->GetParameters("detector_name"),
                                          pImageReader->GetParameters("descriptor_name"));
-
+    pFeatureManager = new FeatureManager(10, pFeatureGrabber);
+    
     if (vision == true)
     {
         namedWindow("slam_gx");
@@ -66,11 +67,19 @@ int GraphicEnd::run_once()
     }
     if (pImageReader->Next() == 0)
         return 0;
+    //读取rgb图与深度图    
     Mat rgb = pImageReader->GetRGB();
     Mat dep = pImageReader->GetDep();
     pFeatureGrabber->SetRGBDep(rgb, dep);
+
+    //抓取当前图形的特征点与描述子
     vector<KeyPoint> keyPoints = pFeatureGrabber->GetKeyPoints();
     Mat desc = pFeatureGrabber->GetDescriptors();
+
+    //将当前图像的特征与机器人位置传送至特征数据库
+    pFeatureManager->Input(keyPoints, desc, _robot_curr);
+    
+    
     if (vision == true)
     {
         Mat image_with_keypoints;
