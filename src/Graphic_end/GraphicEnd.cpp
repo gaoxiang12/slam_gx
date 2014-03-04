@@ -6,6 +6,7 @@
 #include <opencv2/features2d/features2d.hpp>
 #include <fstream>
 #include <vector>
+#include <string>
 
 using namespace std;
 using namespace cv;
@@ -63,9 +64,16 @@ int GraphicEnd::run()
 
 int GraphicEnd::run_once()
 {
+    stringstream ss;
+    ss<<"log/log_"<<_loops<<".txt";
+    string logfile;
+    ss>>logfile;
+    ofstream fout;
+    fout.open(logfile.c_str());
+    
     if (debug_info)
     {
-        cout<<"GraphicEnd::loop"<<_loops<<"..."<<endl;
+        cout<<"GraphicEnd::loop "<<_loops<<"..."<<endl;
     }
     if (pImageReader->Next() == 0)
         return 0;
@@ -81,27 +89,21 @@ int GraphicEnd::run_once()
 
     //将当前图像的特征与机器人位置传送至特征数据库
     pFeatureManager->Input(keyPoints, desc, _robot_curr);
-    
+
+    if (debug_info)
+    {
+        cout<<"robot in on "<<_robot_curr[0]<<", "<<_robot_curr[1]<<", rotation = "<<_robot_curr[2]<<endl;
+    }
     
     if (vision == true)
     {
         Mat image_with_keypoints;
         drawKeypoints(rgb, keyPoints, image_with_keypoints, Scalar::all(-1), 0);
-        vector<Point3f> p3d;
-
-        ofstream fout("p3d.txt");
-        for (size_t i=0; i<keyPoints.size(); i++)
-        {
-            Point3f p = pFeatureGrabber->ComputeFeaturePos(i, _robot_curr);
-            p3d.push_back(p);
-            fout<<p<<endl;
-        }
-        fout.close();
-        
-        
+        pFeatureManager->DumpAllLandmarks(fout);
         imshow("slam_gx", image_with_keypoints);
-        waitKey(0);
+        waitKey(10);
     }
+    fout.close();
 
     _loops++;
     return 1;

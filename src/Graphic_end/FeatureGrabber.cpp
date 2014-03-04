@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 
 using namespace std;
 using namespace cv;
@@ -76,7 +77,11 @@ Point3f FeatureGrabber::ComputeFeaturePos(int index, SE2 robot_pos)
         return Point3f(0., 0., 0.);
     }
 
-    KeyPoint kp = _keypoints[ index ];
+    return this->ComputeFeaturePos(_keypoints[index], robot_pos);
+}
+
+Point3f FeatureGrabber::ComputeFeaturePos(KeyPoint kp, SE2 robot_pos)
+{
     float kx = kp.pt.x;
     float ky = kp.pt.y;
     
@@ -87,9 +92,19 @@ Point3f FeatureGrabber::ComputeFeaturePos(int index, SE2 robot_pos)
     {
         //cout<<"d = "<<d<<endl;
     }
+    //先计算在相机坐标下的位置点，z朝前，x朝右，y朝下
     pos.z = d/camera_factor;   //z pos
     pos.x = (kx - camera_cx) * pos.z/camera_fx;      //x pos
     pos.y = (ky - camera_cy) * pos.z/camera_fy;      //y pos
 
-    return pos;
+    //转到机器人坐标系，y朝前，x朝右，z朝上
+    Point3f pr;
+    pr.y = pos.z;
+    pr.x = pos.x;
+    pr.z = -pos.y;
+
+    //加上机器人的旋转和位移，就得到路标点在世界坐标系下的表示
+    Eigen::Vector2d pw = robot_pos * Eigen::Vector2d(pr.x, pr.y);
+    Point3f p(pw[0], pw[1], pr.z);
+    return p;
 }
