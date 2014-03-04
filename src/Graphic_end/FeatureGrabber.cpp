@@ -15,7 +15,7 @@ vector<KeyPoint> FeatureGrabber::GetKeyPoints()
 {
     if (debug_info)
     {
-        cout<<"grabbing features, detector is "<<_detector
+        cout<<"grabbing features, detector is "<<_detector <<endl
             <<"descriptor is "<<_descriptor<<endl;
         if (_rgb.empty())
             cout<<"rgb is empty!"<<_rgb.rows<<","<<_rgb.cols<<endl;
@@ -37,6 +37,10 @@ vector<KeyPoint> FeatureGrabber::GetKeyPoints()
     if (debug_info)
     {
         cout<<"detect "<<_keypoints.size()<<" keypoints."<<endl;
+        ofstream fout("keypoint.txt");
+        fout<<_keypoints[0].pt<<endl;
+        fout.close();
+
     }
     return _keypoints;
 }
@@ -64,23 +68,28 @@ Mat FeatureGrabber::GetDescriptors()
     return descriptors;
 }
 
-Eigen::Vector3d FeatureGrabber::ComputeFeaturePos(int index, SE2 robot_pos)
+Point3f FeatureGrabber::ComputeFeaturePos(int index, SE2 robot_pos)
 {
     if (index > _keypoints.size())
     {
         cerr<<"ComputeFeaturePos: index out of range. "<<endl;
-        return Eigen::Vector3d(0., 0., 0.);
+        return Point3f(0., 0., 0.);
     }
 
     KeyPoint kp = _keypoints[ index ];
     float kx = kp.pt.x;
     float ky = kp.pt.y;
     
-    Eigen::Vector3d pos;
-    float d = _dep.at<Vec3f>(ky, kx)[ 0 ];
-    pos[ 2 ] = d/camera_factor;   //z pos
-    pos[ 0 ] = (kx - camera_cx) * pos[ 2 ]/camera_fx;      //x pos
-    pos[ 1 ] = (ky - camera_cy) * pos[ 2 ]/camera_fy;      //y pos
+    Point3f pos;
+    uchar c;
+    unsigned short d = _dep.at<unsigned short>(round(ky), round(kx));
+    if (debug_info)
+    {
+        //cout<<"d = "<<d<<endl;
+    }
+    pos.z = d/camera_factor;   //z pos
+    pos.x = (kx - camera_cx) * pos.z/camera_fx;      //x pos
+    pos.y = (ky - camera_cy) * pos.z/camera_fy;      //y pos
 
     return pos;
 }

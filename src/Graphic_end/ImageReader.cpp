@@ -64,9 +64,10 @@ int ImageReader::Next()
     ss.clear();
     ss <<_data_source << "/dep_index/" << _index_curr << ".png";
     ss >> cmd;
+    //注意读深度图的时候不能用CV_LOAD_IMAGE_GRAYSCALE,不然会把深度值归一化到（0，255）
     if (_grayscale)
     {
-        _depth = imread( cmd, CV_LOAD_IMAGE_GRAYSCALE );
+        _depth = imread( cmd, IMREAD_ANYDEPTH );
     }
     else
     {

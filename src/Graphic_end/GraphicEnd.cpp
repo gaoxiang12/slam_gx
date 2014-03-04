@@ -4,7 +4,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
-
+#include <fstream>
 #include <vector>
 
 using namespace std;
@@ -72,6 +72,7 @@ int GraphicEnd::run_once()
     //读取rgb图与深度图    
     Mat rgb = pImageReader->GetRGB();
     Mat dep = pImageReader->GetDep();
+    
     pFeatureGrabber->SetRGBDep(rgb, dep);
 
     //抓取当前图形的特征点与描述子
@@ -86,8 +87,20 @@ int GraphicEnd::run_once()
     {
         Mat image_with_keypoints;
         drawKeypoints(rgb, keyPoints, image_with_keypoints, Scalar::all(-1), 0);
+        vector<Point3f> p3d;
+
+        ofstream fout("p3d.txt");
+        for (size_t i=0; i<keyPoints.size(); i++)
+        {
+            Point3f p = pFeatureGrabber->ComputeFeaturePos(i, _robot_curr);
+            p3d.push_back(p);
+            fout<<p<<endl;
+        }
+        fout.close();
+        
+        
         imshow("slam_gx", image_with_keypoints);
-        waitKey(10000);
+        waitKey(0);
     }
 
     _loops++;

@@ -5,6 +5,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/nonfree/features2d.hpp>
 #include <opencv2/flann/flann.hpp>
+#include <opencv2/calib3d/calib3d.hpp>
+
 #include <fstream>
 #include <iostream>
 
@@ -20,6 +22,8 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     }
     vector<int> good_landmark_idx;  //可以用作本次机器人位姿计算的路标库索引
     Mat new_feature;                //新来的特征，未在库中见到过
+    vector<KeyPoint> good_keypoints;
+    
     //step 1: 将库与输出数据比较
     if (debug_info)
     {
@@ -39,15 +43,16 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         }
 
         //将库与新来的特征匹配
-        vector<DMatch> matches = Match(landmark_desp, feature_descriptor);
+        vector<DMatch> matches = Match(feature_descriptor, landmark_desp);
         vector<bool> good_feature;  //存储每一个新来特征是否被匹配到
         good_feature.resize(feature_descriptor.rows);
         
         //成功的部分用于计算机器人的位置，失败的部分放入缓存
         for(i=0; i<matches.size(); i++)
         {
-            good_landmark_idx.push_back(matches[ i ].queryIdx);
-            good_feature[ matches[ i ].trainIdx ] = true;
+            good_landmark_idx.push_back(matches[ i ].trainIdx);
+            good_feature[ matches[ i ].queryIdx ] = true;
+            good_keypoints.push_back(keypoints[matches[i].queryIdx]);
         }
     
         for(i=0; i<good_feature.size(); i++)
@@ -68,7 +73,14 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     }
 
     //step 2: 用RANSAC将匹配成功的路标用来计算机器人的位置
-    RANSAC();
+    if (debug_info)
+    {
+        cout<<"Step 2: RANSAC"<<endl;
+    }
+    if (good_landmark_idx.empty()==false)
+    {
+        RANSAC(good_landmark_idx, good_keypoints);
+    }
 
     //step 3: 用缓存中的特征去比对新来的特征，计算它们的持续时间
     cout<<"step 3, compare new features to buffer"<<endl;
@@ -141,11 +153,42 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     }
 }
 
-void FeatureManager::RANSAC()
+//用RANSAC架构求解PnP问题
+void FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& keypoints)
 {
+    // 构造目标点的序列
+    Mat objectPoints(good_landmark_idx.size(), 3, CV_64FC1);
+    
+    for (size_t i=0; i<good_landmark_idx.size(); i++)
+    {
+        //Note: 由于list元素不能随机访问，所以这里只能用这种效率低下的做法
+        //期待后面有所改进吧
+        list<LANDMARK>::iterator iter = _landmark_library.begin();
+        for (int ix=0; ix<good_landmark_idx[i]; ix++)
+            iter++;
+        LANDMARK t = *iter;
+        t._pos.row(0).copyTo(objectPoints.row(i));
+    }
+
+    // 构造图像点的序列
+    vector<Point2f> imagePoints;
+    for (size_t i=0; i<keypoints.size(); i++)
+    {
+        imagePoints.push_back(keypoints[i].pt);
+    }
+
+    double camera_matrix[3][3] = { { camera_fx, 0, camera_cx }, { 0, camera_fy ,camera_cy }, { 0, 0, 1 }};
+    Mat cameraMatrix(3,3,CV_64F, camera_matrix);
+
+    Mat rvec, tvec;  //旋转向量与平移向量
+
+    solvePnPRansac(objectPoints, imagePoints, cameraMatrix, NULL, rvec, tvec);
+
     if (debug_info)
     {
-        cout<<"Start RANSAC"<<endl;
+        cout<<"RANSAC results: "<<endl;
+        cout<<"rvec = "<<rvec<<endl;
+        cout<<"tvec = "<<tvec<<endl;
     }
 }
 

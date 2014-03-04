@@ -44,7 +44,7 @@ class FeatureManager
  private:
     //内部函数
     vector<DMatch> Match(Mat des1, Mat des2);
-    void RANSAC();
+    void RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& keypoints);
  protected:
     FeatureGrabberBase* _pFeatureGrabber;
     
