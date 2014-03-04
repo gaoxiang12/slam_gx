@@ -10,10 +10,7 @@
 using namespace g2o;
 using namespace std;
 
-struct FEATURE
-{
-    
-};
+
 
 class GraphicEnd
 {
@@ -30,5 +27,7 @@ protected:
     FeatureManager* pFeatureManager;
     
     SE2 _robot_curr;      //当前机器人所在位置
+
+    int _loops;
 };
 

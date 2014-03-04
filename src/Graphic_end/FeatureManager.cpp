@@ -82,7 +82,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         i++;
     }
 
-    vector<DMatch> matches = Match(buffer_desp, new_feature);
+    vector<DMatch> matches = Match(new_feature, buffer_desp);
 
     //将匹配成功的缓存路标 持续时间＋1
     vector<bool> good_buffer;  //标记缓存中每一个路标是否得到匹配
@@ -134,6 +134,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         cout<<"landmark library : "<<_landmark_library.size()<<endl;
         cout<<"landmark buffer : "<<_landmark_buffer.size()<<endl;
         cout<<"Hit "<<good_landmark_idx.size()<<" landmarks in lib"<<endl;
+        cout<<"Hit "<<hitbuffer<<" landmarks in buffer"<<endl;
         cout<<"Add "<<moveToLib<<" landmark from buffer to lib"<<endl;
         cout<<"Add "<<new_feature.rows-hitbuffer<<" new landmarks to buffer"<<endl;
         cout<<"*** Feature Manager Report ***\n"<<endl;

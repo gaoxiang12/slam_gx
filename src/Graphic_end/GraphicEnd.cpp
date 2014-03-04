@@ -16,19 +16,21 @@ GraphicEnd::GraphicEnd()
     pFeatureGrabber = new FeatureGrabber(
                                          pImageReader->GetParameters("detector_name"),
                                          pImageReader->GetParameters("descriptor_name"));
-    pFeatureManager = new FeatureManager(10, pFeatureGrabber);
+    pFeatureManager = new FeatureManager(3, pFeatureGrabber);
     
     if (vision == true)
     {
         namedWindow("slam_gx");
     }
-    
+
+    _loops = 0;
 }
 
 GraphicEnd::~GraphicEnd()
 {
     delete pImageReader;
     delete pFeatureGrabber;
+    delete pFeatureManager;
 }
 
 int GraphicEnd::run()
@@ -63,7 +65,7 @@ int GraphicEnd::run_once()
 {
     if (debug_info)
     {
-        cout<<"calling GraphicEnd::run_once()..."<<endl;
+        cout<<"GraphicEnd::loop"<<_loops<<"..."<<endl;
     }
     if (pImageReader->Next() == 0)
         return 0;
@@ -88,6 +90,6 @@ int GraphicEnd::run_once()
         waitKey(10000);
     }
 
-    
+    _loops++;
     return 1;
 }

@@ -16,7 +16,7 @@ const bool vision = true;
 const int surf_minHessian = 400;
 
 //匹配相关
-const double match_min_dist = 0.02;  //小于这个距离才算匹配成功
+const double match_min_dist = 10;  //小于这个距离才算匹配成功
 
 //////////////////////////////////////////
 // Camera matrix

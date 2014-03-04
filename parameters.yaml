@@ -3,6 +3,7 @@
 data_source: /home/y/code/dataset/slam
 detector_name: SIFT
 descriptor_name: SIFT
-start_index: 51
-end_index: 52
+start_index: 1
+end_index: 10
 grayscale: 1
+match_min_dist: 10
