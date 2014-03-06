@@ -90,7 +90,22 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         double d = fabs(old_r[0]-new_r[0]) + fabs(old_r[1]-new_r[1]) + fabs(old_r[2]-new_r[2]);
         if (d < max_pos_change && (new_r != Vector3d(0,0,0)))
         {
+            if (debug_info)
+            {
+                cout<<"RANSAC success"<<endl;
+                cout<<"before : robot in on "<<robot_curr[0]<<", "<<robot_curr[1]<<", rotation = "<<robot_curr[2]<<endl;
+                cout<<"after: robot is on "<<robot_new[0]<<", "<<robot_new[1]<<", rotation = "<<robot_new[2]<<endl;
+            }
             robot_curr = robot_new;
+        }
+        else
+        {
+            if (debug_info)
+            {
+                cout<<"RANSAC failed 'cause delta is too large"<<endl;
+                cout<<"before : robot in on "<<robot_curr[0]<<", "<<robot_curr[1]<<", rotation = "<<robot_curr[2]<<endl;
+                cout<<"after: robot is on "<<robot_new[0]<<", "<<robot_new[1]<<", rotation = "<<robot_new[2]<<endl;
+            }
         }
         
     }
@@ -130,7 +145,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         if (good_buffer[ i ] == true){
             //成功匹配
             hitbuffer++;
-            (*iter)._exist_frames+=2;
+            (*iter)._exist_frames++;
         }
         else
         {
@@ -228,12 +243,7 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
 
     solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec);
 
-    if (debug_info)
-    {
-        cout<<"RANSAC results: "<<endl;
-        cout<<"rvec = "<<rvec<<endl;
-        cout<<"tvec = "<<tvec<<endl;
-    }
+
 
     //将旋转向量转换成旋转矩阵
     Mat R;
@@ -242,9 +252,14 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     Eigen::Matrix3f r;
     cv2eigen(R, r);
     Eigen::Vector3f v = r.eulerAngles(0,1,2);  //转化到欧拉角
-    
     SE2 s( tvec.at<double>(0,0), tvec.at<double>(0,1), v[2]);
 
+    if (debug_info)
+    {
+        cout<<"RANSAC results: "<<endl;
+        cout<<"t = "<<s[0]<<", "<<s[1]<<endl;
+        cout<<"r = "<<s[2]<<endl;
+    }
     return s;
     
 }

@@ -14,13 +14,15 @@ using namespace std;
 
 class GraphicEnd
 {
-public:
+
+ public:
     GraphicEnd();
     ~GraphicEnd();
 
     int run();
     int run_once();
-protected:
+
+ public:
 
     ImageReaderBase* pImageReader;
     FeatureGrabberBase* pFeatureGrabber;

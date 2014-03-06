@@ -35,6 +35,10 @@ ImageReader::ImageReader(string parameter_file_addr)
     config[ "start_index" ] >> _start_index;
     config[ "end_index" ] >> _end_index;
     config[ "grayscale" ] >> _grayscale;
+    config[ "step_time" ] >> _step_time;
+    config[ "save_if_seen" ] >> _save_if_seen;
+    config[ "del_not_seen" ] >> _del_not_seen;
+    
     if (_end_index < _start_index)
     {
         cerr<<"end index should be larger than start index."<<endl;
@@ -86,12 +90,32 @@ int ImageReader::Next()
 
 string ImageReader::GetParameters(string para_name) const
 {
+    stringstream ss;
+    string s;
     if (para_name == string("detector_name"))
         return _detector_name;
     if (para_name == string("descriptor_name"))
         return _descriptor_name;
     if (para_name == string("data_source"))
         return _data_source;
+    if (para_name == string("step_time"))
+    {
+        ss<<_step_time;
+        ss>>s;
+        return s;
+    }
+    if (para_name == string("save_if_seen"))
+    {
+        ss<<_save_if_seen;
+        ss>>s;
+        return s;
+    }
+    if (para_name == string("del_not_seen"))
+    {
+        ss<<_del_not_seen;
+        ss>>s;
+        return s;
+    }
 
     return string("unknown_para_name");
 }

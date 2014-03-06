@@ -17,7 +17,10 @@ GraphicEnd::GraphicEnd()
     pFeatureGrabber = new FeatureGrabber(
                                          pImageReader->GetParameters("detector_name"),
                                          pImageReader->GetParameters("descriptor_name"));
-    pFeatureManager = new FeatureManager(3, pFeatureGrabber);
+
+    pFeatureManager = new FeatureManager(atoi(pImageReader->GetParameters("save_if_seen").c_str()),
+                                         pFeatureGrabber,
+                                         -atoi(pImageReader->GetParameters("del_not_seen").c_str()));
     
     if (vision == true)
     {
@@ -74,6 +77,7 @@ int GraphicEnd::run_once()
     if (debug_info)
     {
         cout<<"GraphicEnd::loop "<<_loops<<"..."<<endl;
+        cout<<"graphic end : robot in on "<<_robot_curr[0]<<", "<<_robot_curr[1]<<", rotation = "<<_robot_curr[2]<<endl;
     }
     if (pImageReader->Next() == 0)
         return 0;
@@ -90,10 +94,6 @@ int GraphicEnd::run_once()
     //将当前图像的特征与机器人位置传送至特征数据库
     pFeatureManager->Input(keyPoints, desc, _robot_curr);
 
-    if (debug_info)
-    {
-        cout<<"robot in on "<<_robot_curr[0]<<", "<<_robot_curr[1]<<", rotation = "<<_robot_curr[2]<<endl;
-    }
     
     if (vision == true)
     {
@@ -101,7 +101,8 @@ int GraphicEnd::run_once()
         drawKeypoints(rgb, keyPoints, image_with_keypoints, Scalar::all(-1), 0);
         pFeatureManager->DumpAllLandmarks(fout);
         imshow("slam_gx", image_with_keypoints);
-        waitKey(10);
+        string s = pImageReader->GetParameters("step_time");
+        waitKey(atoi(s.c_str()));
     }
     fout.close();
 

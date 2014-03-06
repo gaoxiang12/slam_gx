@@ -61,5 +61,8 @@ class ImageReader: public ImageReaderBase
     int _start_index;    //起始索引
     int _end_index;      //终止索引
     int _grayscale;      //是否以灰度图读取
-    
+
+    int _step_time;      //调试时每一次循环的等待时间
+
+    int _save_if_seen, _del_not_seen; //管理特征库的参数
 };

@@ -1,9 +1,14 @@
 %YAML:1.0
 #path and data
 data_source: /home/y/code/dataset/slam
-detector_name: SIFT
+detector_name: FAST
 descriptor_name: SIFT
 start_index: 1
-end_index: 2000
+end_index: 2001
 grayscale: 1
-match_min_dist: 10
+match_min_dist: 20
+step_time: 10
+
+# feature manager
+save_if_seen: 5
+del_not_seen: 3
