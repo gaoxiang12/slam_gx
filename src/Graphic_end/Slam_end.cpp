@@ -12,4 +12,5 @@ SLAMEnd::SLAMEnd()
     OptimizationAlgorithmGaussNewton* solver = new OptimizationAlgorithmGaussNewton(blockSolver);
 
     optimizer.setAlgorithm(solver);
+    
 }
