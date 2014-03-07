@@ -26,3 +26,22 @@ const double camera_fx = 520.9, camera_fy = 521.0,
 const double camera_matrix[3][3] = { { camera_fx, 0, camera_cx }, { 0, camera_fy ,camera_cy }, { 0, 0, 1 }};
 
 const double max_pos_change = 0.2;
+
+////////////////////////////////////////
+//图优化参数
+const int ROBOT_START_ID = 0;
+const int LANDMARK_START_ID = 10000; //暂定，这样最多只能处理10000帧
+
+inline int ROBOT_ID(int& id)
+{
+    int d =  id+ROBOT_START_ID;
+    id++;
+    return d;
+}
+
+inline int LANDMARK_ID(int& id){
+    int d = id + LANDMARK_START_ID;
+    id++;
+    return d;
+}
+     

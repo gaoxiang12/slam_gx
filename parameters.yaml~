@@ -8,3 +8,10 @@ end_index: 2001
 grayscale: 1
 match_min_dist: 20
 step_time: 10
+
+# feature manager
+save_if_seen: 5
+del_not_seen: 3
+
+# pose graph
+optimize_step: 10

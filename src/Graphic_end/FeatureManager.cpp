@@ -84,6 +84,9 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     }
     if (good_landmark_idx.empty()==false)
     {
+        _match_idx = good_landmark_idx;
+        _match_keypoints = good_keypoints;
+        
         SE2 robot_new = RANSAC(good_landmark_idx, good_keypoints);
         //检查新的位置与原先的位置是否差的太多
         Vector3d old_r = robot_curr.toVector(), new_r = robot_new.toVector();
@@ -212,10 +215,7 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     {
         //Note: 由于list元素不能随机访问，所以这里只能用这种效率低下的做法
         //期待后面有所改进吧
-        list<LANDMARK>::iterator iter = _landmark_library.begin();
-        for (int ix=0; ix<good_landmark_idx[i]; ix++)
-            iter++;
-        LANDMARK t = *iter;
+        LANDMARK t = GetLandmark(good_landmark_idx[i]);
         objectPoints.push_back(t._pos);
         fout<<t._pos<<endl;
     }

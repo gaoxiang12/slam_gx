@@ -88,10 +88,6 @@ Point3f FeatureGrabber::ComputeFeaturePos(KeyPoint kp, SE2 robot_pos)
     Point3f pos;
     uchar c;
     unsigned short d = _dep.at<unsigned short>(round(ky), round(kx));
-    if (debug_info)
-    {
-        //cout<<"d = "<<d<<endl;
-    }
     //先计算在相机坐标下的位置点，z朝前，x朝右，y朝下
     pos.z = d/camera_factor;   //z pos
     pos.x = (kx - camera_cx) * pos.z/camera_fx;      //x pos
@@ -107,4 +103,22 @@ Point3f FeatureGrabber::ComputeFeaturePos(KeyPoint kp, SE2 robot_pos)
     Eigen::Vector2d pw = robot_pos * Eigen::Vector2d(pr.x, pr.y);
     Point3f p(pw[0], pw[1], pr.z);
     return p;
+}
+
+Eigen::Vector2d FeatureGrabber::GetObservation2d(KeyPoint& kp)
+{
+    //产生一个2维的观察向量
+    float kx = kp.pt.x;
+    float ky = kp.pt.y;
+
+    unsigned short d = _dep.at<unsigned short>(round(ky), round(kx));
+    Point3f pos;
+    pos.z = d/camera_factor;   //z pos
+    pos.x = (kx - camera_cx) * pos.z/camera_fx;      //x pos
+    pos.y = (ky - camera_cy) * pos.z/camera_fy;      //y pos
+
+    //生成相对性x,y的度量
+    Eigen::Vector2d v(pos.x, pos.z);
+
+    return v;
 }

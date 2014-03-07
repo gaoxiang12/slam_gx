@@ -65,4 +65,7 @@ class ImageReader: public ImageReaderBase
     int _step_time;      //调试时每一次循环的等待时间
 
     int _save_if_seen, _del_not_seen; //管理特征库的参数
+
+    //图优化参数
+    int _optimize_step; //优化步数
 };

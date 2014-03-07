@@ -37,6 +37,7 @@ class FeatureGrabberBase
     virtual Mat GetDescriptors() =0;
     virtual Point3f ComputeFeaturePos(int index, SE2 robot_pos)=0;  //计算特征点所在位置，根据机器人的位置与相机参数
     virtual Point3f ComputeFeaturePos(KeyPoint kp, SE2 robot_pos)=0;
+    virtual Eigen::Vector2d GetObservation2d(KeyPoint& kp) =0;
  protected:
     string _detector;
     string _descriptor;
@@ -59,6 +60,7 @@ class FeatureGrabber: public FeatureGrabberBase
     virtual Mat GetDescriptors();
     virtual Point3f ComputeFeaturePos(int index, SE2 robot_pos);
     virtual Point3f ComputeFeaturePos(KeyPoint kp, SE2 robot_pos);
+    virtual Eigen::Vector2d GetObservation2d(KeyPoint& kp);
  protected:
     vector<KeyPoint> _keypoints;
     Mat _rgb, _dep;

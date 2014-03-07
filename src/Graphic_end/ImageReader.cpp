@@ -38,7 +38,7 @@ ImageReader::ImageReader(string parameter_file_addr)
     config[ "step_time" ] >> _step_time;
     config[ "save_if_seen" ] >> _save_if_seen;
     config[ "del_not_seen" ] >> _del_not_seen;
-    
+    config[ "optimize_step" ] >> _optimize_step;
     if (_end_index < _start_index)
     {
         cerr<<"end index should be larger than start index."<<endl;
@@ -116,6 +116,12 @@ string ImageReader::GetParameters(string para_name) const
         ss>>s;
         return s;
     }
-
+    if (para_name == string("optimize_step"))
+    {
+        ss<<_optimize_step;
+        ss>>s;
+        return s;
+    }
+    
     return string("unknown_para_name");
 }

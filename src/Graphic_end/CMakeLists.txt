@@ -11,7 +11,18 @@ ADD_LIBRARY(graphicend
 
 TARGET_LINK_LIBRARIES( graphicend ${OpenCV_LIBS} yaml-cpp g2o_core )
 
+ADD_LIBRARY(slamend
+  Slam_end.cpp
+  )
+TARGET_LINK_LIBRARIES( slamend
+  ${OpenCV_LIBS} yaml-cpp g2o_core
+  g2o_types_slam2d g2o_solver_csparse
+  g2o_csparse_extension ${CSPARSE_LIBRARY})
+
+
 # Build test executable
 ADD_EXECUTABLE( run_graphic run_graphic_end.cpp )
+ADD_EXECUTABLE( run_graphic_and_slam run_graphic_and_slam.cpp)
 
 TARGET_LINK_LIBRARIES( run_graphic graphicend )
+TARGET_LINK_LIBRARIES( run_graphic_and_slam graphicend slamend )

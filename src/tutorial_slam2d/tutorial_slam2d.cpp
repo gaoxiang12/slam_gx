@@ -83,7 +83,7 @@ int main()
   cerr << "done." << endl;
 
   // add the landmark observations
-  // 这一步是在加顶点哦
+  // 这一步是在加顶点哦，就是把观察到的landmark都加到图中去
   cerr << "Optimization: add landmark vertices ... ";
   for (size_t i = 0; i < simulator.landmarks().size(); ++i) {
     const Simulator::Landmark& l = simulator.landmarks()[i];
@@ -94,14 +94,16 @@ int main()
   }
   cerr << "done." << endl;
 
+  //增加边，一个帧中观察到了n个路标，就要加n个边
   cerr << "Optimization: add landmark observations ... ";
   for (size_t i = 0; i < simulator.landmarkObservations().size(); ++i) {
     const Simulator::LandmarkEdge& simEdge = simulator.landmarkObservations()[i];
     EdgeSE2PointXY* landmarkObservation =  new EdgeSE2PointXY;
     landmarkObservation->vertices()[0] = optimizer.vertex(simEdge.from);
     landmarkObservation->vertices()[1] = optimizer.vertex(simEdge.to);
-    landmarkObservation->setMeasurement(simEdge.simulatorMeas);
-    landmarkObservation->setInformation(simEdge.information);
+    
+    landmarkObservation->setMeasurement(simEdge.simulatorMeas); //添加一个观察
+    landmarkObservation->setInformation(simEdge.information);   //添加了一个信息矩阵，个人觉得关系不大
     landmarkObservation->setParameterId(0, sensorOffset->id());
     optimizer.addEdge(landmarkObservation);
   }

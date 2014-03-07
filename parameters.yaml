@@ -1,14 +1,25 @@
 %YAML:1.0
-#path and data
+#数据库根目录位置：该目录下应该有rgb_index/和dep_index/两个文件夹，记录了rgb图与深度度
 data_source: /home/y/code/dataset/slam
+#图像特征的检测算子与描述算子的名称
 detector_name: FAST
 descriptor_name: SIFT
+#数据的起始编号与结束编号
 start_index: 1
 end_index: 2001
+#是否在灰度图中处理数据：暂不支持颜色信息
 grayscale: 1
+#最小匹配距离
 match_min_dist: 20
+#每一次循环的等待时间（毫秒）
 step_time: 10
 
 # feature manager
+#连续看见多少帧则记录至仓库
 save_if_seen: 5
+#新特征，未连续出现多少帧则从缓存删除
 del_not_seen: 3
+
+# pose graph
+# 优化步数
+optimize_step: 10
