@@ -1,4 +1,6 @@
 build*
 lib
 bin
-log
+log*
+debug*
+
