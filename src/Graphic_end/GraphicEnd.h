@@ -31,5 +31,6 @@ class GraphicEnd
     SE2 _robot_curr;      //当前机器人所在位置
 
     int _loops;
+    bool _success;        //标记当前循环是否成功匹配到特征
 };
 

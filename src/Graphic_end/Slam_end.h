@@ -42,6 +42,7 @@ class SLAMEnd
     int optimize();
     int optimize_once();
 
+    void testOptimization(string fileAddr);
  private:
     //私有函数，内部调用
     void AddRobotPose();  //增加一个机器人位置结点

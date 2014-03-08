@@ -244,7 +244,7 @@ namespace g2o {
 
         for (size_t i = 0; i < poses.size(); ++i) {
           const GridPose& p = poses[i];
-          SE2 trueInv = (p.truePose * sensorOffset).inverse();
+          SE2 trueInv = (p.truePose * sensorOffset).inverse(); //注意这里是要取逆的
           for (size_t j = 0; j < p.landmarks.size(); ++j) {
             Landmark* l = p.landmarks[j];
             Vector2d observation;

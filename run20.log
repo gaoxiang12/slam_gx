@@ -1,0 +1,693 @@
+init image reader, parameter file is in /home/y/code/slam_gx/parameters.yaml
+
+-- GraphicEnd::loop 0 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 935 keypoints.
+computing descriptors ... 
+descriptor size is 935,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+
+*** Feature Manager Report ***
+landmark library : 0
+landmark buffer : 720
+Hit 0 landmarks in lib
+Hit 0 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 935 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 1 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 942 keypoints.
+computing descriptors ... 
+descriptor size is 942,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 476.7, min dist = 3.74166
+total good matches : 418
+
+*** Feature Manager Report ***
+landmark library : 0
+landmark buffer : 1024
+Hit 0 landmarks in lib
+Hit 394 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 548 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 2 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 933 keypoints.
+computing descriptors ... 
+descriptor size is 933,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 444.398, min dist = 4
+total good matches : 490
+
+*** Feature Manager Report ***
+landmark library : 0
+landmark buffer : 1260
+Hit 0 landmarks in lib
+Hit 471 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 462 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 3 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 949 keypoints.
+computing descriptors ... 
+descriptor size is 949,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 453.164, min dist = 1
+total good matches : 513
+
+*** Feature Manager Report ***
+landmark library : 0
+landmark buffer : 1492
+Hit 0 landmarks in lib
+Hit 488 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 461 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 4 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 944 keypoints.
+computing descriptors ... 
+descriptor size is 944,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 475.407, min dist = 3.74166
+total good matches : 544
+
+*** Feature Manager Report ***
+landmark library : 0
+landmark buffer : 1706
+Hit 0 landmarks in lib
+Hit 529 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 415 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 5 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 957 keypoints.
+computing descriptors ... 
+descriptor size is 957,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 454.628, min dist = 3.87298
+total good matches : 563
+
+*** Feature Manager Report ***
+landmark library : 235
+landmark buffer : 1504
+Hit 0 landmarks in lib
+Hit 549 landmarks in buffer
+Add 235 landmark from buffer to lib
+Add 408 new landmarks to buffer
+Delete 167 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 6 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 969 keypoints.
+computing descriptors ... 
+descriptor size is 969,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 493.845, min dist = 2.23607
+total good matches : 248
+Step 2: RANSAC
+RANSAC: total good_landmark is 248
+RANSAC: total keypoints is 248
+solving pnp ...
+RANSAC results: 
+t = -6.1931e-05, -2.87291e-05
+r = -9.92223e-05
+RANSAC success
+before : robot in on 0, 0, rotation = 0
+after: robot is on -6.1931e-05, -2.87291e-05, rotation = -9.92223e-05
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 471.749, min dist = 3
+total good matches : 330
+
+*** Feature Manager Report ***
+landmark library : 246
+landmark buffer : 1732
+Hit 248 landmarks in lib
+Hit 325 landmarks in buffer
+Add 11 landmark from buffer to lib
+Add 396 new landmarks to buffer
+Delete 152 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 7 --
+graphic end : robot in on -6.1931e-05, -2.87291e-05, rotation = -9.92223e-05
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 963 keypoints.
+computing descriptors ... 
+descriptor size is 963,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 467.626, min dist = 4.79583
+total good matches : 240
+Step 2: RANSAC
+RANSAC: total good_landmark is 240
+RANSAC: total keypoints is 240
+solving pnp ...
+RANSAC results: 
+t = -6.9024e-05, 1.1121e-05
+r = -8.08686e-05
+RANSAC success
+before : robot in on -6.1931e-05, -2.87291e-05, rotation = -9.92223e-05
+after: robot is on -6.9024e-05, 1.1121e-05, rotation = -8.08686e-05
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 417.852, min dist = 3.74166
+total good matches : 361
+
+*** Feature Manager Report ***
+landmark library : 287
+landmark buffer : 1852
+Hit 240 landmarks in lib
+Hit 345 landmarks in buffer
+Add 41 landmark from buffer to lib
+Add 378 new landmarks to buffer
+Delete 201 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 8 --
+graphic end : robot in on -6.9024e-05, 1.1121e-05, rotation = -8.08686e-05
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 962 keypoints.
+computing descriptors ... 
+descriptor size is 962,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 489.772, min dist = 5.2915
+total good matches : 264
+Step 2: RANSAC
+RANSAC: total good_landmark is 264
+RANSAC: total keypoints is 264
+solving pnp ...
+RANSAC results: 
+t = -0.0200474, -0.0101634
+r = -0.0156324
+RANSAC success
+before : robot in on -6.9024e-05, 1.1121e-05, rotation = -8.08686e-05
+after: robot is on -0.0200474, -0.0101634, rotation = -0.0156324
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 439.799, min dist = 5.38516
+total good matches : 316
+
+*** Feature Manager Report ***
+landmark library : 301
+landmark buffer : 2020
+Hit 264 landmarks in lib
+Hit 305 landmarks in buffer
+Add 14 landmark from buffer to lib
+Add 393 new landmarks to buffer
+Delete 200 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 9 --
+graphic end : robot in on -0.0200474, -0.0101634, rotation = -0.0156324
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 979 keypoints.
+computing descriptors ... 
+descriptor size is 979,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 486.766, min dist = 5.47723
+total good matches : 231
+Step 2: RANSAC
+RANSAC: total good_landmark is 231
+RANSAC: total keypoints is 231
+solving pnp ...
+RANSAC results: 
+t = -0.000159593, 0.000117919
+r = 0.000348507
+RANSAC success
+before : robot in on -0.0200474, -0.0101634, rotation = -0.0156324
+after: robot is on -0.000159593, 0.000117919, rotation = 0.000348507
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 423.074, min dist = 5.65685
+total good matches : 268
+
+*** Feature Manager Report ***
+landmark library : 312
+landmark buffer : 2272
+Hit 231 landmarks in lib
+Hit 253 landmarks in buffer
+Add 11 landmark from buffer to lib
+Add 495 new landmarks to buffer
+Delete 217 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 10 --
+graphic end : robot in on -0.000159593, 0.000117919, rotation = 0.000348507
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 972 keypoints.
+computing descriptors ... 
+descriptor size is 972,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 491.231, min dist = 7.54983
+total good matches : 186
+Step 2: RANSAC
+RANSAC: total good_landmark is 186
+RANSAC: total keypoints is 186
+solving pnp ...
+RANSAC results: 
+t = -0.00041251, -0.000122181
+r = 0.000170308
+RANSAC success
+before : robot in on -0.000159593, 0.000117919, rotation = 0.000348507
+after: robot is on -0.00041251, -0.000122181, rotation = 0.000170308
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 452.247, min dist = 6.40312
+total good matches : 298
+
+*** Feature Manager Report ***
+landmark library : 315
+landmark buffer : 2545
+Hit 186 landmarks in lib
+Hit 279 landmarks in buffer
+Add 3 landmark from buffer to lib
+Add 507 new landmarks to buffer
+Delete 212 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 11 --
+graphic end : robot in on -0.00041251, -0.000122181, rotation = 0.000170308
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 957 keypoints.
+computing descriptors ... 
+descriptor size is 957,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 496.674, min dist = 11.0454
+total good matches : 165
+Step 2: RANSAC
+RANSAC: total good_landmark is 165
+RANSAC: total keypoints is 165
+solving pnp ...
+RANSAC results: 
+t = -0.00107788, 0.00148965
+r = 0.00119164
+RANSAC success
+before : robot in on -0.00041251, -0.000122181, rotation = 0.000170308
+after: robot is on -0.00107788, 0.00148965, rotation = 0.00119164
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 462.444, min dist = 14.5945
+total good matches : 192
+
+*** Feature Manager Report ***
+landmark library : 328
+landmark buffer : 2782
+Hit 165 landmarks in lib
+Hit 181 landmarks in buffer
+Add 13 landmark from buffer to lib
+Add 611 new landmarks to buffer
+Delete 350 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 12 --
+graphic end : robot in on -0.00107788, 0.00148965, rotation = 0.00119164
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 943 keypoints.
+computing descriptors ... 
+descriptor size is 943,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 465.961, min dist = 10.4403
+total good matches : 162
+Step 2: RANSAC
+RANSAC: total good_landmark is 162
+RANSAC: total keypoints is 162
+solving pnp ...
+RANSAC results: 
+t = 6.06228e-05, 0.00101657
+r = 0.00179492
+RANSAC success
+before : robot in on -0.00107788, 0.00148965, rotation = 0.00119164
+after: robot is on 6.06228e-05, 0.00101657, rotation = 0.00179492
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 365.203, min dist = 7.14143
+total good matches : 270
+
+*** Feature Manager Report ***
+landmark library : 331
+landmark buffer : 2955
+Hit 162 landmarks in lib
+Hit 259 landmarks in buffer
+Add 3 landmark from buffer to lib
+Add 522 new landmarks to buffer
+Delete 335 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 13 --
+graphic end : robot in on 6.06228e-05, 0.00101657, rotation = 0.00179492
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 933 keypoints.
+computing descriptors ... 
+descriptor size is 933,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 488.073, min dist = 5.74456
+total good matches : 233
+Step 2: RANSAC
+RANSAC: total good_landmark is 233
+RANSAC: total keypoints is 233
+solving pnp ...
+RANSAC results: 
+t = -0.000762567, -0.000717511
+r = 0.0031438
+RANSAC success
+before : robot in on 6.06228e-05, 0.00101657, rotation = 0.00179492
+after: robot is on -0.000762567, -0.000717511, rotation = 0.0031438
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 416.566, min dist = 6
+total good matches : 231
+
+*** Feature Manager Report ***
+landmark library : 334
+landmark buffer : 3018
+Hit 233 landmarks in lib
+Hit 225 landmarks in buffer
+Add 3 landmark from buffer to lib
+Add 475 new landmarks to buffer
+Delete 403 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 14 --
+graphic end : robot in on -0.000762567, -0.000717511, rotation = 0.0031438
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 940 keypoints.
+computing descriptors ... 
+descriptor size is 940,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 494.651, min dist = 16.6433
+total good matches : 164
+Step 2: RANSAC
+RANSAC: total good_landmark is 164
+RANSAC: total keypoints is 164
+solving pnp ...
+RANSAC results: 
+t = -0.0012202, 0.000944962
+r = 0.00391014
+RANSAC success
+before : robot in on -0.000762567, -0.000717511, rotation = 0.0031438
+after: robot is on -0.0012202, 0.000944962, rotation = 0.00391014
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 390.66, min dist = 8.30662
+total good matches : 296
+
+*** Feature Manager Report ***
+landmark library : 336
+landmark buffer : 3078
+Hit 164 landmarks in lib
+Hit 288 landmarks in buffer
+Add 2 landmark from buffer to lib
+Add 488 new landmarks to buffer
+Delete 418 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 15 --
+graphic end : robot in on -0.0012202, 0.000944962, rotation = 0.00391014
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 960 keypoints.
+computing descriptors ... 
+descriptor size is 960,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 466.612, min dist = 5.2915
+total good matches : 198
+Step 2: RANSAC
+RANSAC: total good_landmark is 198
+RANSAC: total keypoints is 198
+solving pnp ...
+RANSAC results: 
+t = -0.00122981, -0.000527083
+r = 0.00715781
+RANSAC success
+before : robot in on -0.0012202, 0.000944962, rotation = 0.00391014
+after: robot is on -0.00122981, -0.000527083, rotation = 0.00715781
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 446.67, min dist = 6.63325
+total good matches : 281
+
+*** Feature Manager Report ***
+landmark library : 339
+landmark buffer : 3077
+Hit 198 landmarks in lib
+Hit 269 landmarks in buffer
+Add 3 landmark from buffer to lib
+Add 493 new landmarks to buffer
+Delete 479 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 16 --
+graphic end : robot in on -0.00122981, -0.000527083, rotation = 0.00715781
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 886 keypoints.
+computing descriptors ... 
+descriptor size is 886,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 482.876, min dist = 9.43398
+total good matches : 170
+Step 2: RANSAC
+RANSAC: total good_landmark is 170
+RANSAC: total keypoints is 170
+solving pnp ...
+RANSAC results: 
+t = -0.00169503, -0.00151152
+r = 0.0107164
+RANSAC success
+before : robot in on -0.00122981, -0.000527083, rotation = 0.00715781
+after: robot is on -0.00169503, -0.00151152, rotation = 0.0107164
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 430.893, min dist = 7.48331
+total good matches : 290
+
+*** Feature Manager Report ***
+landmark library : 339
+landmark buffer : 2962
+Hit 170 landmarks in lib
+Hit 274 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 442 new landmarks to buffer
+Delete 541 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 17 --
+graphic end : robot in on -0.00169503, -0.00151152, rotation = 0.0107164
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 932 keypoints.
+computing descriptors ... 
+descriptor size is 932,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 512.745, min dist = 10.7238
+total good matches : 155
+Step 2: RANSAC
+RANSAC: total good_landmark is 155
+RANSAC: total keypoints is 155
+solving pnp ...
+RANSAC results: 
+t = -0.000291451, 0.00502351
+r = 0.0161908
+RANSAC success
+before : robot in on -0.00169503, -0.00151152, rotation = 0.0107164
+after: robot is on -0.000291451, 0.00502351, rotation = 0.0161908
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 396.928, min dist = 8.94427
+total good matches : 269
+
+*** Feature Manager Report ***
+landmark library : 345
+landmark buffer : 2926
+Hit 155 landmarks in lib
+Hit 263 landmarks in buffer
+Add 6 landmark from buffer to lib
+Add 514 new landmarks to buffer
+Delete 538 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 18 --
+graphic end : robot in on -0.000291451, 0.00502351, rotation = 0.0161908
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 888 keypoints.
+computing descriptors ... 
+descriptor size is 888,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 478.312, min dist = 6.40312
+total good matches : 165
+Step 2: RANSAC
+RANSAC: total good_landmark is 165
+RANSAC: total keypoints is 165
+solving pnp ...
+RANSAC results: 
+t = -0.00248202, -0.000795157
+r = 0.0208835
+RANSAC success
+before : robot in on -0.000291451, 0.00502351, rotation = 0.0161908
+after: robot is on -0.00248202, -0.000795157, rotation = 0.0208835
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 456.052, min dist = 8
+total good matches : 263
+
+*** Feature Manager Report ***
+landmark library : 349
+landmark buffer : 2877
+Hit 165 landmarks in lib
+Hit 258 landmarks in buffer
+Add 4 landmark from buffer to lib
+Add 465 new landmarks to buffer
+Delete 505 old landmarks from buffer
+*** Feature Manager Report ***
+
+
+-- GraphicEnd::loop 19 --
+graphic end : robot in on -0.00248202, -0.000795157, rotation = 0.0208835
+grabbing features, detector is SIFT
+descriptor is SIFT
+detect 775 keypoints.
+computing descriptors ... 
+descriptor size is 775,128
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+FeatureManager::Start matching...
+Match:: max dist = 484.922, min dist = 12.3288
+total good matches : 101
+Step 2: RANSAC
+RANSAC: total good_landmark is 101
+RANSAC: total keypoints is 101
+solving pnp ...
+RANSAC results: 
+t = 0.000835656, -0.000810409
+r = 0.0296031
+RANSAC success
+before : robot in on -0.00248202, -0.000795157, rotation = 0.0208835
+after: robot is on 0.000835656, -0.000810409, rotation = 0.0296031
+step 3, compare new features to buffer
+FeatureManager::Start matching...
+Match:: max dist = 402.859, min dist = 14.0357
+total good matches : 145
+
+*** Feature Manager Report ***
+landmark library : 350
+landmark buffer : 2888
+Hit 101 landmarks in lib
+Hit 142 landmarks in buffer
+Add 1 landmark from buffer to lib
+Add 532 new landmarks to buffer
+Delete 517 old landmarks from buffer
+*** Feature Manager Report ***
+

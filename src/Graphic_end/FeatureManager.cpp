@@ -17,6 +17,7 @@ using namespace std;
 //该函数实现了特征的比对和管理
 void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor, SE2& robot_curr)
 {
+    _success = false;
     if (debug_info)
     {
         cout<<"FeatureManager::Collecting input data..."<<endl;
@@ -45,6 +46,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         }
 
         //将库与新来的特征匹配
+        //注意是拿新来的特征作为query，仓库中的作为train
         vector<DMatch> matches = Match(feature_descriptor, landmark_desp);
         vector<bool> good_feature;  //存储每一个新来特征是否被匹配到
         good_feature.resize(feature_descriptor.rows);
@@ -88,6 +90,14 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         _match_keypoints = good_keypoints;
         
         SE2 robot_new = RANSAC(good_landmark_idx, good_keypoints);
+        if (_success == false )
+        {
+            if (debug_info)
+            {
+                cout<<"RANSAC failed 'cause inlier is to few"<<endl;
+                return;
+            }
+        }
         //检查新的位置与原先的位置是否差的太多
         Vector3d old_r = robot_curr.toVector(), new_r = robot_new.toVector();
         double d = fabs(old_r[0]-new_r[0]) + fabs(old_r[1]-new_r[1]) + fabs(old_r[2]-new_r[2]);
@@ -98,6 +108,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
                 cout<<"RANSAC success"<<endl;
                 cout<<"before : robot in on "<<robot_curr[0]<<", "<<robot_curr[1]<<", rotation = "<<robot_curr[2]<<endl;
                 cout<<"after: robot is on "<<robot_new[0]<<", "<<robot_new[1]<<", rotation = "<<robot_new[2]<<endl;
+                _success = true;
             }
             robot_curr = robot_new;
         }
@@ -180,6 +191,8 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         {
             LANDMARK landmark(0, Point3f(0,0,0) , new_feature.row(i), 1);
             landmark._pos = _pFeatureGrabber->ComputeFeaturePos(new_keypoints[i], robot_curr);
+            if (landmark._pos == Point3f(0.,0.,0.)) //没有深度信息
+                continue;
             _landmark_buffer.push_back(landmark);
         }
     }
@@ -221,15 +234,12 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     }
     fout.close();
     
-    fout.open("bin/ransac_imagepoint.txt");
     // 构造图像点的序列
     vector<Point2f> imagePoints;
     for (size_t i=0; i<keypoints.size(); i++)
     {
         imagePoints.push_back(keypoints[i].pt);
-        fout<<keypoints[i].pt<<endl;
     }
-    fout.close();
 
     if (debug_info)
     {
@@ -241,10 +251,23 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
 
     Mat rvec, tvec;  //旋转向量与平移向量
 
-    solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec);
+    Mat inliers;
+    solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec, false, 100, 8.0, 100, inliers);
 
+    //如果inlier太少的话，说明ransac是失败的。
+    if (inliers.rows < 5)
+    {
+        _success = false;
+        return SE2(0,0,0);
+    }
 
-
+    _success = true;
+    _inlier.clear();
+    _inlier.resize(good_landmark_idx.size());
+    for (int i=0; i<inliers.rows; i++)
+    {
+        _inlier[ inliers.at<int>(i, 0) ] = true;
+    }
     //将旋转向量转换成旋转矩阵
     Mat R;
     Rodrigues(rvec, R);
@@ -259,6 +282,7 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
         cout<<"RANSAC results: "<<endl;
         cout<<"t = "<<s[0]<<", "<<s[1]<<endl;
         cout<<"r = "<<s[2]<<endl;
+        cout<<"v = "<<v[0]<<", "<<v[1]<<", "<<v[2]<<endl;
     }
     return s;
     

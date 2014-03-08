@@ -67,6 +67,7 @@ int GraphicEnd::run()
 
 int GraphicEnd::run_once()
 {
+    _success = false;
     stringstream ss;
     ss<<"log/log_"<<_loops<<".txt";
     string logfile;
@@ -76,7 +77,7 @@ int GraphicEnd::run_once()
     
     if (debug_info)
     {
-        cout<<"GraphicEnd::loop "<<_loops<<"..."<<endl;
+        cout<<"\n-- GraphicEnd::loop "<<_loops<<" --"<<endl;
         cout<<"graphic end : robot in on "<<_robot_curr[0]<<", "<<_robot_curr[1]<<", rotation = "<<_robot_curr[2]<<endl;
     }
     if (pImageReader->Next() == 0)

@@ -8,6 +8,7 @@
 #include <opencv2/features2d/features2d.hpp>
 #include <list>
 #include <fstream>
+#include <iostream>
 #include "FeatureGrabber.h"
 
 using namespace std;
@@ -29,7 +30,8 @@ struct LANDMARK
         return Vector2d(_pos.x, _pos.y);
     }
     int _ID;
-    Point3f _pos;
+    Point3f _pos_cv;     //opencv下的坐标
+    Eigen::Vector2d _pos_g2o; //g2o的2d slam下坐标
     Mat _descriptor;
     int _exist_frames;   //连续存在的帧数
 };
@@ -83,8 +85,10 @@ class FeatureManager
 
     vector<int> _match_idx;            //该帧中被匹配到的路标的下标
     vector<KeyPoint> _match_keypoints; //图像成功匹配到路标的那些关键点
+    vector<bool> _inlier;              //标识da是否正确
+    
     // 参数定义
     int _save_if_seen;  //多少帧连续看见该特征，则存储之
     int _delete_if_not_seen;  //缓存中，多少帧未出现此特征，则删除之
-    
+    bool _success;
 };

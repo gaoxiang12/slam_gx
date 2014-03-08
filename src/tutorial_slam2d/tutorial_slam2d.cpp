@@ -103,7 +103,8 @@ int main()
     landmarkObservation->vertices()[1] = optimizer.vertex(simEdge.to);
     
     landmarkObservation->setMeasurement(simEdge.simulatorMeas); //添加一个观察
-    landmarkObservation->setInformation(simEdge.information);   //添加了一个信息矩阵，个人觉得关系不大
+    landmarkObservation->setInformation(simEdge.information);   //添加了一个信息矩阵，似乎不加就会报错,信息矩阵是噪声协方差阵的逆，
+    //此例中协方差阵取成了diag(0.05,0.05)
     landmarkObservation->setParameterId(0, sensorOffset->id());
     optimizer.addEdge(landmarkObservation);
   }
@@ -128,7 +129,7 @@ int main()
   optimizer.optimize(10);
   cerr << "done." << endl;
 
-  //因为毕竟有300个结点同时在优化，所以比较影响速度
+  //因为毕竟有300个结点,近四千条边同时在优化，所以比较影响速度
   
   optimizer.save("tutorial_after.g2o");
 

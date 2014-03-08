@@ -31,6 +31,8 @@ const double max_pos_change = 0.2;
 //图优化参数
 const int ROBOT_START_ID = 0;
 const int LANDMARK_START_ID = 10000; //暂定，这样最多只能处理10000帧
+const double landmarkNoise = 0.05;   //关键点测量的噪声估计值
+
 
 inline int ROBOT_ID(int& id)
 {
