@@ -55,7 +55,7 @@ namespace g2o {
         {
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW;
           int id;
-          Vector2d truePose;
+          Vector2d truePose;                //真实位置，在世界坐标系下
           Vector2d simulatedPose;
           std::vector<int> seenBy;
           Landmark() : id(-1) {}
@@ -94,7 +94,7 @@ namespace g2o {
         {
           int from;
           int to;
-          Vector2d trueMeas;
+          Vector2d trueMeas;                //真实测量，在机器人本体坐标系下
           Vector2d simulatorMeas;
           Matrix2d information;
           EIGEN_MAKE_ALIGNED_OPERATOR_NEW;

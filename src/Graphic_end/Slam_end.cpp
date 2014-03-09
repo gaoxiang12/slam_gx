@@ -69,16 +69,8 @@ int SLAMEnd::optimize_once()
     //Step 2. 把与当前位置相关的路标，以及相连的边也加至图中
     AddLandmark();
     //Step 3. 优化
+    solve();
 
-    //固定第一个状态点
-    VertexSE2* firstRobotPose = dynamic_cast<VertexSE2*>(optimizer.vertex(0));
-    firstRobotPose->setFixed(true);
-    optimizer.setVerbose(true);
-
-    optimizer.initializeOptimization();
-    optimizer.optimize(_optimize_step);
-
-    optimizer.save("log/newest.g2o");
     return 1;
 }
 
@@ -106,6 +98,29 @@ void SLAMEnd::AddRobotPose()
     robot->setId( ROBOT_ID(_robot_id) );
     robot->setEstimate(pr);
     optimizer.addVertex(robot);
+
+    if (add_ransac_odo && _robot_id > 1)
+    {
+        //非初始化，加入一条边，连接新顶点与前顶点
+        VertexSE2* prev = dynamic_cast<VertexSE2*> (optimizer.vertex(_robot_id-2));
+        if (prev)
+        {
+            EdgeSE2* odo = new EdgeSE2;
+            odo->vertices()[0] = optimizer.vertex( _robot_id - 2 );
+            odo->vertices()[1] = optimizer.vertex( _robot_id - 1 );
+            odo->setMeasurement( _prev.inverse()*pr );
+            Matrix3d information, cov;
+            cov.fill(0.);
+            cov(0,0) = transNoiseX * transNoiseX;
+            cov(1,1) = transNoiseY * transNoiseY;
+            cov(2,2) = rotationNoise * rotationNoise;
+            information = cov.inverse();
+            odo->setInformation( information );
+            optimizer.addEdge(odo);
+        }
+    }
+
+    _prev = pr;
 }
 
 void SLAMEnd::AddLandmark()
@@ -146,7 +161,8 @@ void SLAMEnd::AddLandmark()
         landmarkObservation->setMeasurement( _pFeatureGrabber->GetObservation2d(_pFeatureManager->_match_keypoints[i]) );
         Matrix2d information, cov;
         cov.fill(0.);
-        cov(0,0) = cov(1,1) = landmarkNoise*landmarkNoise;
+        cov(0,0) = landmarkNoiseX * landmarkNoiseX;
+        cov(1,1) = landmarkNoiseY * landmarkNoiseY;
         information = cov.inverse();
         landmarkObservation->setInformation(information);
         optimizer.addEdge(landmarkObservation);

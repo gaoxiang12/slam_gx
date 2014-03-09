@@ -17,21 +17,22 @@ using namespace g2o;
 
 struct LANDMARK
 {
-    LANDMARK(int ID=-1, Point3f pos=Point3f(0,0,0), Mat desc=Mat(), int exist=0)
+    LANDMARK(int ID=-1, Point3f pos=Point3f(0,0,0), Eigen::Vector3d posg2o=Eigen::Vector3d(0,0,0), Mat desc=Mat(), int exist=0)
     {
         _ID = ID;
-        _pos = pos;
+        _pos_cv = pos;
+        _pos_g2o = posg2o;
         _descriptor = desc;
         _exist_frames = exist;
     }
 
     Eigen::Vector2d Pose2d() const
     {
-        return Vector2d(_pos.x, _pos.y);
+        return Vector2d(_pos_g2o[0], _pos_g2o[1]);
     }
     int _ID;
     Point3f _pos_cv;     //opencv下的坐标
-    Eigen::Vector2d _pos_g2o; //g2o的2d slam下坐标
+    Eigen::Vector3d _pos_g2o; //g2o的2d slam下坐标
     Mat _descriptor;
     int _exist_frames;   //连续存在的帧数
 };
@@ -53,7 +54,8 @@ class FeatureManager
     {
         for (list<LANDMARK>::iterator iter = _landmark_library.begin(); iter !=_landmark_library.end(); iter++)
         {
-            fout<<iter->_pos<<endl;
+            fout<<iter->_pos_cv<<endl;
+            fout<<iter->_pos_g2o<<endl;
         }
     }
 
@@ -75,10 +77,8 @@ class FeatureManager
     SE2 RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& keypoints);
  protected:
     FeatureGrabberBase* _pFeatureGrabber;
+    Mat _rvec, _tvec;
     
- protected:
-    Mat _landmark_pos;   //路标的位置
-
  public:
     list<LANDMARK> _landmark_buffer;   //缓存
     list<LANDMARK> _landmark_library;  //库

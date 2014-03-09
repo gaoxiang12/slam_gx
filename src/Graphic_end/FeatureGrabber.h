@@ -35,7 +35,9 @@ class FeatureGrabberBase
     }
     virtual vector<KeyPoint> GetKeyPoints() =0;
     virtual Mat GetDescriptors() =0;
-    virtual Point3f ComputeFeaturePos(int index, SE2 robot_pos)=0;  //计算特征点所在位置，根据机器人的位置与相机参数
+    virtual Point3f ComputeFeaturePos(int index, SE2 robot_pos)=0;
+    //根据机器人的位置与相机参数,计算特征点所在位置，返回在openCV下的位置坐标
+    
     virtual Point3f ComputeFeaturePos(KeyPoint kp, SE2 robot_pos)=0;
     virtual Eigen::Vector2d GetObservation2d(KeyPoint& kp) =0;
  protected:

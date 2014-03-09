@@ -39,29 +39,7 @@ GraphicEnd::~GraphicEnd()
 
 int GraphicEnd::run()
 {
-    if (debug_info)
-    {
-        cout<<"calling GraphicEnd::run()..."<<endl;
-    }
 
-    while (pImageReader->IsEnd() == false )
-    {
-        if (pImageReader->Next() == 0)
-            break;
-        Mat rgb = pImageReader->GetRGB();
-        Mat dep = pImageReader->GetDep();
-        pFeatureGrabber->SetRGBDep(rgb, dep);
-        vector<KeyPoint> keyPoints = pFeatureGrabber->GetKeyPoints();
-        Mat desc = pFeatureGrabber->GetDescriptors();
-        if (vision == true)
-        {
-            Mat image_with_keypoints;
-            drawKeypoints(rgb, keyPoints, image_with_keypoints, Scalar::all(-1), 0);
-            imshow("slam_gx", rgb);
-            waitKey(10000);
-        }
-
-    }// end of while
     return 1;
 }
 
@@ -69,10 +47,14 @@ int GraphicEnd::run_once()
 {
     _success = false;
     stringstream ss;
-    ss<<"log/log_"<<_loops<<".txt";
     string logfile;
-    ss>>logfile;
+
     ofstream fout;
+    static ofstream frobot("log/robot.path");
+    frobot<<_loops<<": "<<_robot_curr[0]<<", "<<_robot_curr[1]<<", "<<_robot_curr[2]<<endl;
+    
+    ss<<"log/log_"<<_loops<<".txt";
+    ss>>logfile;
     fout.open(logfile.c_str());
     
     if (debug_info)
@@ -80,7 +62,7 @@ int GraphicEnd::run_once()
         cout<<"\n-- GraphicEnd::loop "<<_loops<<" --"<<endl;
         cout<<"graphic end : robot in on "<<_robot_curr[0]<<", "<<_robot_curr[1]<<", rotation = "<<_robot_curr[2]<<endl;
     }
-    if (pImageReader->Next() == 0)
+    if (pImageReader->Next() == 0) //存在下一张图片
         return 0;
     //读取rgb图与深度图    
     Mat rgb = pImageReader->GetRGB();
@@ -94,7 +76,6 @@ int GraphicEnd::run_once()
 
     //将当前图像的特征与机器人位置传送至特征数据库
     pFeatureManager->Input(keyPoints, desc, _robot_curr);
-
     
     if (vision == true)
     {

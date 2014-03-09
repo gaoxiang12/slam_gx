@@ -184,15 +184,17 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         i++;
     }
 
-    //将未匹配到的新特征作为新路标放到缓存中，首先将计算路标的绝对位置
+    //将未匹配到的新特征作为新路标放到缓存中，首先将计算路标的世界坐标
     for (i=0; i<good_new_feature.size(); i++)
     {
         if (good_new_feature[ i ] == false)
         {
-            LANDMARK landmark(0, Point3f(0,0,0) , new_feature.row(i), 1);
-            landmark._pos = _pFeatureGrabber->ComputeFeaturePos(new_keypoints[i], robot_curr);
-            if (landmark._pos == Point3f(0.,0.,0.)) //没有深度信息
+            //放入缓存中，注意这里是唯一计算位置的地方
+            LANDMARK landmark(0, Point3f(0,0,0), Eigen::Vector3d(0,0,0), new_feature.row(i), 1);
+            landmark._pos_cv = _pFeatureGrabber->ComputeFeaturePos(new_keypoints[i], robot_curr);
+            if (landmark._pos_cv == Point3f(0.,0.,0.)) //没有深度信息
                 continue;
+            landmark._pos_g2o = cv2g2o(landmark._pos_cv);
             _landmark_buffer.push_back(landmark);
         }
     }
@@ -213,6 +215,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
 }
 
 //用RANSAC架构求解PnP问题
+//这里使用了OpenCV的 solvePnPRansac函数，所以必须在opencv坐标系下计算，否则会带来问题
 SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& keypoints)
 {
     // 构造目标点的序列
@@ -222,19 +225,20 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
         cout<<"RANSAC: total keypoints is "<<keypoints.size()<<endl;
     }
     ofstream fout("bin/ransac_object.txt");
-    vector<Point3f> objectPoints;
+    
+    vector<Point3f> objectPoints;  //目标点，有x,y,z三个坐标，世界坐标系下
     
     for (size_t i=0; i<good_landmark_idx.size(); i++)
     {
         //Note: 由于list元素不能随机访问，所以这里只能用这种效率低下的做法
         //期待后面有所改进吧
         LANDMARK t = GetLandmark(good_landmark_idx[i]);
-        objectPoints.push_back(t._pos);
-        fout<<t._pos<<endl;
+        objectPoints.push_back(t._pos_cv);
+        fout<<t._pos_cv<<endl;
     }
     fout.close();
     
-    // 构造图像点的序列
+    // 构造图像点的序列，有u,v两个坐标，在本地坐标系下
     vector<Point2f> imagePoints;
     for (size_t i=0; i<keypoints.size(); i++)
     {
@@ -250,8 +254,10 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     Mat cameraMatrix(3,3,CV_64F, camera_matrix);
 
     Mat rvec, tvec;  //旋转向量与平移向量
+    //_rvec.copyTo(rvec);
+    //_tvec.copyTo(tvec);
 
-    Mat inliers;
+    Mat inliers;     //正常值，DA正确的
     solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec, false, 100, 8.0, 100, inliers);
 
     //如果inlier太少的话，说明ransac是失败的。
@@ -262,20 +268,36 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     }
 
     _success = true;
+    _rvec = rvec;
+    _tvec = tvec;
+    
+    //存储inlier，因为在g2o优化中还会用到
     _inlier.clear();
-    _inlier.resize(good_landmark_idx.size());
+    _inlier.resize(good_landmark_idx.size()); 
+    
     for (int i=0; i<inliers.rows; i++)
     {
         _inlier[ inliers.at<int>(i, 0) ] = true;
     }
+    
     //将旋转向量转换成旋转矩阵
     Mat R;
     Rodrigues(rvec, R);
     //再转到Eigen
     Eigen::Matrix3f r;
     cv2eigen(R, r);
-    Eigen::Vector3f v = r.eulerAngles(0,1,2);  //转化到欧拉角
-    SE2 s( tvec.at<double>(0,0), tvec.at<double>(0,1), v[2]);
+
+    //再转换到机器人坐标系
+    //首先是平移向量
+    Point3f t(-tvec.at<double>(0,0), -tvec.at<double>(0,1), -tvec.at<double>(0,2));
+    //转换至g2o坐标系
+    Eigen::Vector3d tg = cv2g2o(t);
+    //然后是旋转矩阵，注意到cv算的是 [u,v] = RCX，而在g2o中是 z = T^(-1) x，所以需要求逆
+
+    Matrix3f rv = r.inverse();
+    Eigen::Vector3f v = rv.eulerAngles(2,0,1);  //转化到欧拉角，主要关心的旋转方向是cv的y轴，代表机器人的旋转角
+
+    SE2 s( tg[0], tg[1], -v[2]);
 
     if (debug_info)
     {

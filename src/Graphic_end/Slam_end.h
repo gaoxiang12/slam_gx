@@ -42,6 +42,18 @@ class SLAMEnd
     int optimize();
     int optimize_once();
 
+    void solve()
+    {
+            //固定第一个状态点
+        VertexSE2* firstRobotPose = dynamic_cast<VertexSE2*>(optimizer.vertex(0));
+        firstRobotPose->setFixed(true);
+        optimizer.setVerbose(true);
+
+        optimizer.initializeOptimization();
+        optimizer.optimize(_optimize_step);
+
+        optimizer.save("log/newest.g2o");
+    }
     void testOptimization(string fileAddr);
  private:
     //私有函数，内部调用
@@ -56,6 +68,7 @@ class SLAMEnd
     ImageReaderBase* _pImageReader;
 
     int _optimize_step;
+    SE2 _prev;            //上一次循环的机器人位置
 
  public:
     //公开数据成员
