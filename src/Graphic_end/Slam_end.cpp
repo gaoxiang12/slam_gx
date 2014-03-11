@@ -61,7 +61,7 @@ int SLAMEnd::optimize_once()
 {
     if (_pFeatureManager->_success == false)
     {
-        cerr<<"SLAMEnd: RANSAC failed. Skep optimization."<<endl;
+        cerr<<"SLAMEnd: RANSAC failed. Skip optimization."<<endl;
         return -1;
     }
     //Step 1. 把当前机器人位置增加到pose图中
@@ -70,8 +70,49 @@ int SLAMEnd::optimize_once()
     AddLandmark();
     //Step 3. 优化
     solve();
+    //Step 4. 反馈
+    //feedback();
 
+    //保存
+    save();
     return 1;
+}
+
+void SLAMEnd::feedback()
+{
+    //将优化的结果返回至Graphic end的特征仓库中
+    //Step 1. 更新机器人位置
+    
+    VertexSE2* curr = dynamic_cast<VertexSE2*> (optimizer.vertex(_robot_id - 1));
+    Eigen::Vector3d* esti = new Eigen::Vector3d();
+    curr->getEstimateData((double*)esti);
+    if (debug_info)
+    {
+        cout<<"robot pos changed to:"<<(*esti)[0]<<", "<<(*esti)[1]<<", "<<(*esti)[2]<<endl;
+    }
+    _pGraphicEnd->_robot_curr.fromVector(*esti);
+    delete esti;
+
+    //Step 2. 更新路标位置
+    list<LANDMARK>& landmarks = _pFeatureManager->_landmark_library;
+    int i=0; 
+    for (list<LANDMARK>::iterator iter = landmarks.begin();
+         iter != landmarks.end(); iter++)
+    {
+        VertexPointXY* t = dynamic_cast<VertexPointXY*>(optimizer.vertex(i + LANDMARK_START_ID));
+        if (t)
+        {
+            //在图中存在该路标，则更新它的位置信息
+            Eigen::Vector2d *d = new Eigen::Vector2d();
+            t->getEstimateData((double*)d);
+            Eigen::Vector3d new_pos((*d)[0], (*d)[1], iter->_pos_g2o[2]);
+            iter->_pos_g2o = new_pos;
+            iter->_pos_cv = g2o2cv(new_pos);
+            delete d;
+        }
+        i++;
+        //不存在就不用鸟这破玩意了
+    }
 }
 
 void SLAMEnd::testOptimization(string fileAddr)
@@ -108,7 +149,7 @@ void SLAMEnd::AddRobotPose()
             EdgeSE2* odo = new EdgeSE2;
             odo->vertices()[0] = optimizer.vertex( _robot_id - 2 );
             odo->vertices()[1] = optimizer.vertex( _robot_id - 1 );
-            odo->setMeasurement( _prev.inverse()*pr );
+            odo->setMeasurement( SE2(0,0,0) ); //因为没有惯性测量设备，我们默认机器人没有移动
             Matrix3d information, cov;
             cov.fill(0.);
             cov(0,0) = transNoiseX * transNoiseX;
@@ -125,15 +166,11 @@ void SLAMEnd::AddRobotPose()
 
 void SLAMEnd::AddLandmark()
 {
-
     //将与当前机器人位置有关的路标加到图中
     //首先加顶点，即在此帧中观察到的新路标
     vector<int>& match = _pFeatureManager->_match_idx;
-    if (debug_info)
-    {
-        cout<<"Opt: add landmarks: "<<match.size()<<endl;
-    }
 
+    int add_edge = 0, add_vertex = 0;
     for (size_t i=0; i<match.size(); i++)
     {
         if (_pFeatureManager->_inlier[i] == false)
@@ -142,17 +179,24 @@ void SLAMEnd::AddLandmark()
         }
         int id = match[i] + LANDMARK_START_ID;
         VertexPointXY* landmark = dynamic_cast<VertexPointXY*>(optimizer.vertex(id));
+        LANDMARK l = _pFeatureManager->GetLandmark(match[i]);
+
+        add_edge++;
         if (landmark == NULL)
         {
+            add_vertex++;
             //该路标未在图中出现，新增一个节点
             landmark = new VertexPointXY;
             landmark->setId(match[i] + LANDMARK_START_ID);
-            LANDMARK l = _pFeatureManager->GetLandmark(match[i]);
             landmark->setEstimate( l.Pose2d() );
             optimizer.addVertex( landmark );
         }
+        else
+        {
+        }
 
         //增加current_state与landmark相连的那条边
+
         EdgeSE2PointXY* landmarkObservation = new EdgeSE2PointXY;
 
         //机器人位置所在的顶点，因为前面加过1了，现在就要减1
@@ -161,10 +205,25 @@ void SLAMEnd::AddLandmark()
         landmarkObservation->setMeasurement( _pFeatureGrabber->GetObservation2d(_pFeatureManager->_match_keypoints[i]) );
         Matrix2d information, cov;
         cov.fill(0.);
-        cov(0,0) = landmarkNoiseX * landmarkNoiseX;
+        if ( l._pos_g2o[0] > 15 )
+        {
+            //x 方向很远，说明这个值超过了深度图的最大测量距离，它的值是不确定的
+            cov(0,0) = landmarkNoiseXL * landmarkNoiseXL;
+        }
+        else
+        {
+            cov(0,0) = landmarkNoiseX * landmarkNoiseX;
+        }
         cov(1,1) = landmarkNoiseY * landmarkNoiseY;
         information = cov.inverse();
         landmarkObservation->setInformation(information);
+        if (robust_kernel)
+            landmarkObservation->robustKernel();
         optimizer.addEdge(landmarkObservation);
+    }
+
+    if (debug_info)
+    {
+        cout<<"g2o: add "<<add_vertex<<" new landmark, "<<add_edge<<" observations."<<endl;
     }
 }

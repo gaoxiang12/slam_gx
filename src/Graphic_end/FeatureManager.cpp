@@ -110,6 +110,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
                 cout<<"after: robot is on "<<robot_new[0]<<", "<<robot_new[1]<<", rotation = "<<robot_new[2]<<endl;
                 _success = true;
             }
+            //在这里直接进行更改并不是太好，建议挪至slam端进行
             robot_curr = robot_new;
         }
         else
@@ -121,6 +122,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
                 cout<<"after: robot is on "<<robot_new[0]<<", "<<robot_new[1]<<", rotation = "<<robot_new[2]<<endl;
             }
         }
+
         
     }
 
@@ -170,12 +172,22 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         //检查该路标是否超过 _save_if_seen 以上，若是，则丢到路标库中
         if ((*iter)._exist_frames > _save_if_seen )
         {
-            _landmark_library.push_back(*iter);
-            iter = _landmark_buffer.erase(iter);  //从缓存中删除
-            moveToLib++;
+            if (moveToLib > max_landmark_per_loop)
+            {
+                //认为该帧中已经有足够的路标，丢弃剩下的路标
+                iter = _landmark_buffer.erase(iter);
+            }
+            else
+            {
+                //该帧还没有足够的路标，所以这个路标可以从缓存中移动至库中
+                _landmark_library.push_back(*iter);
+                iter = _landmark_buffer.erase(iter);
+                moveToLib++;
+            }
         }
         else if (iter->_exist_frames < _delete_if_not_seen)
         {
+            // 很长时间未看到此特征，删除之
             iter = _landmark_buffer.erase(iter);
             delete_from_buffer++;
         }
@@ -261,12 +273,17 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec, false, 100, 8.0, 100, inliers);
 
     //如果inlier太少的话，说明ransac是失败的。
+
     if (inliers.rows < 5)
     {
         _success = false;
         return SE2(0,0,0);
     }
-
+    
+    if (debug_info)
+    {
+        cout<<"RANSAC: inliers = "<<inliers.rows<<endl;
+    }
     _success = true;
     _rvec = rvec;
     _tvec = tvec;
@@ -274,10 +291,12 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     //存储inlier，因为在g2o优化中还会用到
     _inlier.clear();
     _inlier.resize(good_landmark_idx.size()); 
+
     
     for (int i=0; i<inliers.rows; i++)
     {
         _inlier[ inliers.at<int>(i, 0) ] = true;
+        //        _inlier[i] = true;
     }
     
     //将旋转向量转换成旋转矩阵

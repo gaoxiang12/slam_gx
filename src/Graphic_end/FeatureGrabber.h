@@ -67,3 +67,13 @@ class FeatureGrabber: public FeatureGrabberBase
     vector<KeyPoint> _keypoints;
     Mat _rgb, _dep;
 };
+
+//为了能够对keypoint进行排序，需要定义一个比较类
+class CompareKeyPoint
+{
+ public:
+    bool operator() (const KeyPoint& kp1, const KeyPoint& kp2)
+    {
+        return kp1.response < kp2.response;
+    }
+};

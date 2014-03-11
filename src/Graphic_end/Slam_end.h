@@ -25,6 +25,7 @@
 #include <g2o/core/optimization_algorithm_gauss_newton.h>
 #include <g2o/solvers/csparse/linear_solver_csparse.h>
 
+#include <sstream>
 using namespace std;
 using namespace g2o;
 
@@ -42,17 +43,27 @@ class SLAMEnd
     int optimize();
     int optimize_once();
 
+    //求解一次优化问题
     void solve()
     {
-            //固定第一个状态点
+        //固定第一个状态点
         VertexSE2* firstRobotPose = dynamic_cast<VertexSE2*>(optimizer.vertex(0));
         firstRobotPose->setFixed(true);
         optimizer.setVerbose(true);
 
         optimizer.initializeOptimization();
         optimizer.optimize(_optimize_step);
+    }
 
-        optimizer.save("log/newest.g2o");
+    //重要：将优化结果反馈至图形端
+    void feedback();
+    void save()
+    {
+        stringstream ss;
+        ss<<"g2o/"<<_pGraphicEnd->_loops<<".g2o";
+        string str;
+        ss>>str;
+        optimizer.save(str.c_str());  
     }
     void testOptimization(string fileAddr);
  private:

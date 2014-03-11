@@ -8,6 +8,7 @@
 #include <iostream>
 #include <Eigen/Core>
 #include <Eigen/Geometry>
+#include <algorithm>
 
 using namespace std;
 using namespace cv;
@@ -35,36 +36,22 @@ vector<KeyPoint> FeatureGrabber::GetKeyPoints()
 
     detector->detect(_rgb, _keypoints);
 
+    //对_keypoints按重要性排序
+    sort(_keypoints.begin(), _keypoints.end(), CompareKeyPoint());
+    
     if (debug_info)
     {
         cout<<"detect "<<_keypoints.size()<<" keypoints."<<endl;
-        ofstream fout("keypoint.txt");
-        fout<<_keypoints[0].pt<<endl;
-        fout.close();
     }
     return _keypoints;
 }
 
 Mat FeatureGrabber::GetDescriptors()
 {
-    if (debug_info)
-    {
-        cout<<"computing descriptors ... "<<endl;
-    }
-
     Ptr<DescriptorExtractor> descriptor_extractor = DescriptorExtractor::create( _descriptor );
     Mat descriptors;
     descriptor_extractor->compute(_rgb, _keypoints, descriptors);
 
-    if (debug_info)
-    {
-        cout<<"descriptor size is "<<descriptors.rows<<","<<descriptors.cols<<endl;
-
-        ofstream fout("descriptor.txt");
-        fout<<descriptors;
-        fout.close();
-    }
-    
     return descriptors;
 }
 

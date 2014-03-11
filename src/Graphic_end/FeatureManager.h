@@ -54,8 +54,7 @@ class FeatureManager
     {
         for (list<LANDMARK>::iterator iter = _landmark_library.begin(); iter !=_landmark_library.end(); iter++)
         {
-            fout<<iter->_pos_cv<<endl;
-            fout<<iter->_pos_g2o<<endl;
+            fout<<iter->_pos_g2o[0]<<", "<<iter->_pos_g2o[1]<<", "<<iter->_pos_g2o[2]<<endl;
         }
     }
 
