@@ -39,6 +39,7 @@ ImageReader::ImageReader(string parameter_file_addr)
     config[ "save_if_seen" ] >> _save_if_seen;
     config[ "del_not_seen" ] >> _del_not_seen;
     config[ "optimize_step" ] >> _optimize_step;
+    config[ "robust_kernel" ] >> _robust_kernel;
     if (_end_index < _start_index)
     {
         cerr<<"end index should be larger than start index."<<endl;
@@ -121,6 +122,10 @@ string ImageReader::GetParameters(string para_name) const
         ss<<_optimize_step;
         ss>>s;
         return s;
+    }
+    if (para_name == string("robust_kernel"))
+    {
+        return _robust_kernel;
     }
     
     return string("unknown_para_name");

@@ -80,8 +80,21 @@ int GraphicEnd::run_once()
     if (vision == true)
     {
         Mat image_with_keypoints;
-        drawKeypoints(rgb, keyPoints, image_with_keypoints, Scalar::all(-1), 0);
+        drawKeypoints(rgb, pFeatureManager->_match_keypoints, image_with_keypoints);
         pFeatureManager->DumpAllLandmarks(fout);
+
+        /*
+        fout.close();
+
+        ss.clear();
+        ss<<"log/log_"<<_loops<<"_buffer.txt";
+        logfile.clear();
+        ss>>logfile;
+        fout.open(logfile.c_str());
+        pFeatureManager->DumpLandmarkBuffer(fout);
+        fout.close();
+        */
+        drawRobot(image_with_keypoints);
         imshow("slam_gx", image_with_keypoints);
         string s = pImageReader->GetParameters("step_time");
         waitKey(atoi(s.c_str()));
@@ -90,4 +103,19 @@ int GraphicEnd::run_once()
 
     _loops++;
     return 1;
+}
+
+void GraphicEnd::drawRobot(Mat& img)
+{
+    rectangle( img, Point2f(400, 350), Point2f(500, 450), Scalar(255,0,0), 3 );
+    
+    Point2f p(450+_robot_curr[0]*20, 400+_robot_curr[1]*20);
+    //位置信息
+    circle(img, Point2f(450,400), 2, Scalar(0, 0, 255), 2);
+    circle(img, p, 10, Scalar(255, 0, 0), 1);
+
+    //转角信息
+    double alpha = -3.1415926/2-_robot_curr[2];
+    Point2f p2( p.x + 30*cos(alpha), p.y + 10 * sin(alpha) );
+    line(img, p, p2, Scalar(255,0,0), 1);
 }

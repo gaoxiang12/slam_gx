@@ -143,8 +143,10 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     //将匹配成功的缓存路标 持续时间＋1, 未匹配到的路标持续时间－1
     vector<bool> good_buffer;  //标记缓存中每一个路标是否得到匹配
     vector<bool> good_new_feature; //标记每一个新特征是否被匹配到
+
     good_buffer.resize(_landmark_buffer.size());
     good_new_feature.resize(new_feature.rows);
+    
     for (i=0; i<matches.size(); i++)
     {
         good_buffer[ matches[ i ].trainIdx ] = true;
@@ -196,13 +198,18 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         i++;
     }
 
+    ofstream kf("kp.txt");
+    cout<<"good new feature:"<<good_new_feature.size()<<endl;
     //将未匹配到的新特征作为新路标放到缓存中，首先将计算路标的世界坐标
+    int add_landmark_buffer=0;
     for (i=0; i<good_new_feature.size(); i++)
     {
         if (good_new_feature[ i ] == false)
         {
+            add_landmark_buffer++;
             //放入缓存中，注意这里是唯一计算位置的地方
             LANDMARK landmark(0, Point3f(0,0,0), Eigen::Vector3d(0,0,0), new_feature.row(i), 1);
+            kf<<new_keypoints[i].pt<<endl;
             landmark._pos_cv = _pFeatureGrabber->ComputeFeaturePos(new_keypoints[i], robot_curr);
             if (landmark._pos_cv == Point3f(0.,0.,0.)) //没有深度信息
                 continue;
@@ -210,6 +217,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
             _landmark_buffer.push_back(landmark);
         }
     }
+    kf.close();
 
     //end of step 3
     if (debug_info)
@@ -220,7 +228,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         cout<<"Hit "<<good_landmark_idx.size()<<" landmarks in lib"<<endl;
         cout<<"Hit "<<hitbuffer<<" landmarks in buffer"<<endl;
         cout<<"Add "<<moveToLib<<" landmark from buffer to lib"<<endl;
-        cout<<"Add "<<new_feature.rows-hitbuffer<<" new landmarks to buffer"<<endl;
+        cout<<"Add "<<add_landmark_buffer<<" new landmarks to buffer"<<endl;
         cout<<"Delete "<<delete_from_buffer<<" old landmarks from buffer"<<endl;
         cout<<"*** Feature Manager Report ***\n"<<endl;
     }
@@ -236,7 +244,7 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
         cout<<"RANSAC: total good_landmark is "<<good_landmark_idx.size()<<endl;
         cout<<"RANSAC: total keypoints is "<<keypoints.size()<<endl;
     }
-    ofstream fout("bin/ransac_object.txt");
+    ofstream fout("ransac_object.txt");
     
     vector<Point3f> objectPoints;  //目标点，有x,y,z三个坐标，世界坐标系下
     
@@ -249,13 +257,16 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
         fout<<t._pos_cv<<endl;
     }
     fout.close();
-    
+
+    fout.open("ransac_keypoint.txt");
     // 构造图像点的序列，有u,v两个坐标，在本地坐标系下
     vector<Point2f> imagePoints;
     for (size_t i=0; i<keypoints.size(); i++)
     {
         imagePoints.push_back(keypoints[i].pt);
+        fout<<keypoints[i].pt<<endl;
     }
+    fout.close();
 
     if (debug_info)
     {
@@ -266,14 +277,14 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     Mat cameraMatrix(3,3,CV_64F, camera_matrix);
 
     Mat rvec, tvec;  //旋转向量与平移向量
-    //_rvec.copyTo(rvec);
-    //_tvec.copyTo(tvec);
+    _rvec.copyTo(rvec);
+    _tvec.copyTo(tvec);
 
     Mat inliers;     //正常值，DA正确的
-    solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec, false, 100, 8.0, 100, inliers);
+    solvePnPRansac(objectPoints, imagePoints, cameraMatrix, Mat(), rvec, tvec, true, 100, 8.0, 100, inliers);
 
     //如果inlier太少的话，说明ransac是失败的。
-
+    /*
     if (inliers.rows < 5)
     {
         _success = false;
@@ -284,6 +295,7 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     {
         cout<<"RANSAC: inliers = "<<inliers.rows<<endl;
     }
+    */
     _success = true;
     _rvec = rvec;
     _tvec = tvec;
@@ -295,8 +307,8 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     
     for (int i=0; i<inliers.rows; i++)
     {
-        _inlier[ inliers.at<int>(i, 0) ] = true;
-        //        _inlier[i] = true;
+        //_inlier[ inliers.at<int>(i, 0) ] = true;
+        _inlier[i] = true;   //全部当成inlier，测试g2o的robust核的处理能力
     }
     
     //将旋转向量转换成旋转矩阵
@@ -352,6 +364,7 @@ vector<DMatch> FeatureManager::Match(Mat des1, Mat des2)
 
     if (des1.empty() || des2.empty())
     {
+        cout<<"des1 or des2 is empty."<<endl;
         return matches;
     }
     

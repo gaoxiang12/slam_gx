@@ -12,6 +12,7 @@
 #include <g2o/types/slam2d/edge_se2.h>
 #include <g2o/types/slam2d/edge_se2_pointxy.h>
 #include <g2o/types/slam2d/types_slam2d.h>
+
 #include <sstream>
 
 using namespace std;
@@ -35,7 +36,8 @@ SLAMEnd::SLAMEnd(GraphicEnd* pGraphicEnd)
 
     _robot_id = 0;
     _landmark_id = 0;
-    
+
+    _robust_kernel_ptr = RobustKernelFactory::instance()->construct(_pImageReader->GetParameters("robust_kernel"));
     if (debug_info)
     {
         cout<<"Slam end init over."<<endl;
@@ -45,6 +47,7 @@ SLAMEnd::SLAMEnd(GraphicEnd* pGraphicEnd)
 SLAMEnd::~SLAMEnd()
 {
     optimizer.clear();
+    RobustKernelFactory::destroy();
     //    Factory::destory();
     //    OptimizationAlgorithmFactory::destory();
     //    HyperGraphActionLibrary::destroy();
@@ -71,7 +74,7 @@ int SLAMEnd::optimize_once()
     //Step 3. 优化
     solve();
     //Step 4. 反馈
-    //feedback();
+    feedback();
 
     //保存
     save();
@@ -140,6 +143,7 @@ void SLAMEnd::AddRobotPose()
     robot->setEstimate(pr);
     optimizer.addVertex(robot);
 
+    
     if (add_ransac_odo && _robot_id > 1)
     {
         //非初始化，加入一条边，连接新顶点与前顶点
@@ -150,6 +154,7 @@ void SLAMEnd::AddRobotPose()
             odo->vertices()[0] = optimizer.vertex( _robot_id - 2 );
             odo->vertices()[1] = optimizer.vertex( _robot_id - 1 );
             odo->setMeasurement( SE2(0,0,0) ); //因为没有惯性测量设备，我们默认机器人没有移动
+            //odo->setMeasurement( _prev.inverse()*pr );  //或者，使用了RANSAC得到的结果，作为惯性测量
             Matrix3d information, cov;
             cov.fill(0.);
             cov(0,0) = transNoiseX * transNoiseX;
@@ -169,13 +174,20 @@ void SLAMEnd::AddLandmark()
     //将与当前机器人位置有关的路标加到图中
     //首先加顶点，即在此帧中观察到的新路标
     vector<int>& match = _pFeatureManager->_match_idx;
-
+    cout<<"g2o: match size = "<<match.size()<<endl;
+    
+    //由于边集可能增长的太快，考虑限制一下它的增长速度
     int add_edge = 0, add_vertex = 0;
     for (size_t i=0; i<match.size(); i++)
     {
-        if (_pFeatureManager->_inlier[i] == false)
+        if (add_edge > max_match_per_loop)
         {
-            continue;
+            break;
+        }
+            
+        //if (_pFeatureManager->_inlier[i] == false)
+        {
+            //            continue;
         }
         int id = match[i] + LANDMARK_START_ID;
         VertexPointXY* landmark = dynamic_cast<VertexPointXY*>(optimizer.vertex(id));
@@ -218,7 +230,9 @@ void SLAMEnd::AddLandmark()
         information = cov.inverse();
         landmarkObservation->setInformation(information);
         if (robust_kernel)
-            landmarkObservation->robustKernel();
+        {
+            landmarkObservation->setRobustKernel( _robust_kernel_ptr );
+        }
         optimizer.addEdge(landmarkObservation);
     }
 

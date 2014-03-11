@@ -77,3 +77,13 @@ class CompareKeyPoint
         return kp1.response < kp2.response;
     }
 };
+
+//为了使用unique()，定义关键点的位置比较类
+class CompareKeyPointEqualPosition
+{
+ public:
+    bool operator() (const KeyPoint& kp1, const KeyPoint& kp2)
+    {
+        return kp1.pt == kp2.pt;
+    }
+};

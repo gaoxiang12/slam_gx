@@ -36,12 +36,16 @@ vector<KeyPoint> FeatureGrabber::GetKeyPoints()
 
     detector->detect(_rgb, _keypoints);
 
+    //去除位置重复的特征点，因为它们对定位没有贡献
+    cout<<"detect "<<_keypoints.size()<<" keypoints."<<endl;
+    vector<KeyPoint>::iterator iter = unique(_keypoints.begin(), _keypoints.end(), CompareKeyPointEqualPosition() );
+    _keypoints.erase(iter, _keypoints.end());
+
     //对_keypoints按重要性排序
-    sort(_keypoints.begin(), _keypoints.end(), CompareKeyPoint());
-    
+    //sort(_keypoints.begin(), _keypoints.end(), CompareKeyPoint());
     if (debug_info)
     {
-        cout<<"detect "<<_keypoints.size()<<" keypoints."<<endl;
+        cout<<"keypoint size = "<<_keypoints.size()<<" after unique()."<<endl;
     }
     return _keypoints;
 }

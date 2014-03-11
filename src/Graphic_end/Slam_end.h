@@ -24,6 +24,9 @@
 #include <g2o/core/optimization_algorithm_factory.h>
 #include <g2o/core/optimization_algorithm_gauss_newton.h>
 #include <g2o/solvers/csparse/linear_solver_csparse.h>
+#include <g2o/core/robust_kernel.h>
+#include <g2o/core/robust_kernel_factory.h>
+
 
 #include <sstream>
 using namespace std;
@@ -80,6 +83,7 @@ class SLAMEnd
 
     int _optimize_step;
     SE2 _prev;            //上一次循环的机器人位置
+    RobustKernel* _robust_kernel_ptr;
 
  public:
     //公开数据成员

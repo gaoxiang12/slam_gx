@@ -68,4 +68,5 @@ class ImageReader: public ImageReaderBase
 
     //图优化参数
     int _optimize_step; //优化步数
+    string _robust_kernel;
 };

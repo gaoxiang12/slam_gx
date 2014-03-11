@@ -58,6 +58,14 @@ class FeatureManager
         }
     }
 
+    void DumpLandmarkBuffer(ofstream& fout)
+    {
+        for (list<LANDMARK>::iterator iter = _landmark_buffer.begin(); iter !=_landmark_buffer.end(); iter++)
+        {
+            fout<<iter->_pos_g2o[0]<<", "<<iter->_pos_g2o[1]<<", "<<iter->_pos_g2o[2]<<endl;
+        }
+    }
+
     LANDMARK GetLandmark(int id)
     {
         if (id >= _landmark_library.size())

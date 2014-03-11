@@ -5,7 +5,7 @@ data_source: /home/y/code/dataset/slam
 detector_name: FAST
 descriptor_name: SIFT
 #数据的起始编号与结束编号
-start_index: 1
+start_index: 1600
 end_index: 2001
 #是否在灰度图中处理数据：暂不支持颜色信息
 grayscale: 1
@@ -23,3 +23,6 @@ del_not_seen: 3
 # pose graph
 # 优化步数
 optimize_step: 10
+
+# robust核函数
+robust_kernel: Cauchy

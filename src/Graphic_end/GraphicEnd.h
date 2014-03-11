@@ -22,6 +22,8 @@ class GraphicEnd
     int run();
     int run_once();
 
+    void drawRobot(Mat& img);
+    
  public:
 
     ImageReaderBase* pImageReader;
