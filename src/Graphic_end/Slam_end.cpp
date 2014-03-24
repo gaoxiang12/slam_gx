@@ -1,10 +1,9 @@
 /* ****************************************
  * SLAM 端的实现
  ****************************************/
-#include "Slam_end.h"
-
 
 #include "Slam_end.h"
+#include "ParameterReader.h"
 #include <string>
 
 #include <g2o/types/slam2d/vertex_se2.h>
@@ -32,12 +31,12 @@ SLAMEnd::SLAMEnd(GraphicEnd* pGraphicEnd)
     _pImageReader = pGraphicEnd->pImageReader;
     _pFeatureGrabber = pGraphicEnd->pFeatureGrabber;
     
-    _optimize_step = atoi(_pImageReader->GetParameters("optimize_step").c_str());
+    _optimize_step = atoi(g_pParaReader->GetPara("optimize_step").c_str());
 
     _robot_id = 0;
     _landmark_id = 0;
 
-    _robust_kernel_ptr = RobustKernelFactory::instance()->construct(_pImageReader->GetParameters("robust_kernel"));
+    _robust_kernel_ptr = RobustKernelFactory::instance()->construct(g_pParaReader->GetPara("robust_kernel"));
     if (debug_info)
     {
         cout<<"Slam end init over."<<endl;

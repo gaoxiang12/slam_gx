@@ -1,6 +1,8 @@
 #include "GraphicEnd.h"
 #include "const.h"
 #include "FeatureGrabber.h"
+#include "ParameterReader.h"
+
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -13,20 +15,22 @@ using namespace cv;
 
 GraphicEnd::GraphicEnd()
 {
+    g_pParaReader = new ParameterReader(parameter_file_addr);
     pImageReader = new ImageReader(parameter_file_addr);
     pFeatureGrabber = new FeatureGrabber(
-                                         pImageReader->GetParameters("detector_name"),
-                                         pImageReader->GetParameters("descriptor_name"));
+                                         g_pParaReader->GetPara("detector_name"),
+                                         g_pParaReader->GetPara("descriptor_name"));
 
-    pFeatureManager = new FeatureManager(atoi(pImageReader->GetParameters("save_if_seen").c_str()),
+    pFeatureManager = new FeatureManager(atoi(g_pParaReader->GetPara("save_if_seen").c_str()),
                                          pFeatureGrabber,
-                                         -atoi(pImageReader->GetParameters("del_not_seen").c_str()));
+                                         -atoi(g_pParaReader->GetPara("del_not_seen").c_str()));
     
     if (vision == true)
     {
         namedWindow("slam_gx");
     }
 
+    _step_time = atoi(g_pParaReader->GetPara("step_time").c_str());
     _loops = 0;
 }
 
@@ -96,8 +100,8 @@ int GraphicEnd::run_once()
         */
         drawRobot(image_with_keypoints);
         imshow("slam_gx", image_with_keypoints);
-        string s = pImageReader->GetParameters("step_time");
-        waitKey(atoi(s.c_str()));
+        
+        waitKey(_step_time);
     }
     fout.close();
 

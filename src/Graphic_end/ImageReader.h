@@ -21,9 +21,6 @@ class ImageReaderBase
         return Mat();
     }
 
-    virtual string GetParameters(string para_name) const {
-        return string("");
-    }
 };
 
 
@@ -45,28 +42,14 @@ class ImageReader: public ImageReaderBase
     virtual Mat GetDep() {
         return _depth;
     }
-    virtual string GetParameters(string para_name) const;
  protected:
-
     // image
     Mat _rgb;
     Mat _depth;
 
     int _index_curr;  //当前所在的索引位置
-    
-    // configure parameters
-    string _data_source; //数据来源
-    string _detector_name;//特征相关：检测子名称
-    string _descriptor_name; //描述子名称
-    int _start_index;    //起始索引
-    int _end_index;      //终止索引
-    int _grayscale;      //是否以灰度图读取
+    int _start_index, _end_index;
 
-    int _step_time;      //调试时每一次循环的等待时间
-
-    int _save_if_seen, _del_not_seen; //管理特征库的参数
-
-    //图优化参数
-    int _optimize_step; //优化步数
-    string _robust_kernel;
+    string _data_source;
+    bool _grayscale;
 };

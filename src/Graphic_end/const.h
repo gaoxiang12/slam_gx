@@ -10,7 +10,7 @@ using namespace cv;
 using namespace std;
 
 const bool debug_info = true; //是否输出调试信息
-const string parameter_file_addr = "/home/y/code/slam_gx/parameters.yaml";
+const string parameter_file_addr = "/home/x/code/slam_gx/parameters.yaml";
 const bool vision = true;
 //////////////////////////////////////////
 // 图像特征点相关参数
