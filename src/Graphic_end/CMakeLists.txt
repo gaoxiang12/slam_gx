@@ -1,5 +1,5 @@
 MESSAGE(STATUS "Configuring Graphic end..."})
-
+MESSAGE(STATUS "CSparse is in :" ${CSPARSE_LIBS} )
 FIND_PACKAGE( OpenCV REQUIRED )
 INCLUDE_DIRECTORIES(${G2O_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIR} ${CSPARSE_INCLUDE_DIR})
 
@@ -14,7 +14,7 @@ ADD_LIBRARY(slamend
   )
 TARGET_LINK_LIBRARIES( slamend
   ${OpenCV_LIBS} yaml-cpp g2o_core
-  g2o_types_slam2d g2o_solver_csparse
+  g2o_types_slam2d g2o_solver_csparse g2o_stuff ${CSPARSE_LIBRARY}
   g2o_csparse_extension)
 
 
