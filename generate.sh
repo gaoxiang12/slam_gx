@@ -12,3 +12,7 @@ cd ..
 rm log/*
 rm debug.txt
 rm g2o/*
+rm ransac_keypoint.txt
+rm keypoint.txt
+rm kp.txt
+rm p3d.txt
