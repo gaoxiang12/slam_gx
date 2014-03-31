@@ -24,6 +24,8 @@ GraphicEnd::GraphicEnd()
     pFeatureManager = new FeatureManager(atoi(g_pParaReader->GetPara("save_if_seen").c_str()),
                                          pFeatureGrabber,
                                          -atoi(g_pParaReader->GetPara("del_not_seen").c_str()));
+
+    pFeatureManager2 = new FeatureManager2( pFeatureGrabber );
     
     if (vision == true)
     {
@@ -39,6 +41,7 @@ GraphicEnd::~GraphicEnd()
     delete pImageReader;
     delete pFeatureGrabber;
     delete pFeatureManager;
+    delete pFeatureManager2;
 }
 
 int GraphicEnd::run()
@@ -79,13 +82,14 @@ int GraphicEnd::run_once()
     Mat desc = pFeatureGrabber->GetDescriptors();
 
     //将当前图像的特征与机器人位置传送至特征数据库
-    pFeatureManager->Input(keyPoints, desc, _robot_curr);
+    //pFeatureManager->Input(keyPoints, desc, _robot_curr);
+    pFeatureManager2->Input(keyPoints, desc, _robot_curr, _loops);
     
     if (vision == true)
     {
         Mat image_with_keypoints;
-        drawKeypoints(rgb, pFeatureManager->_match_keypoints, image_with_keypoints);
-        pFeatureManager->DumpAllLandmarks(fout);
+        drawKeypoints(rgb, keyPoints, image_with_keypoints);
+        //        pFeatureManager->DumpAllLandmarks(fout);
 
         /*
         fout.close();

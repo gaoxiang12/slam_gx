@@ -5,7 +5,7 @@ data_source: /home/y/code/dataset/slam
 detector_name: FAST
 descriptor_name: SIFT
 # 数据的起始编号与结束编号
-start_index: 1800
+start_index: 1
 end_index: 2001
 # 是否在灰度图中处理数据：暂不支持颜色信息
 grayscale: yes

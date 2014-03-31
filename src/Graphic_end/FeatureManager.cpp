@@ -354,17 +354,11 @@ void FeatureManager::ReportStatus()
 //将参数中的描述子与_landmark_desp中存储的描述子进行对比，使用FLANN
 vector<DMatch> FeatureManager::Match(Mat des1, Mat des2)
 {
-    if (debug_info)
-    {
-        cout<<"FeatureManager::Start matching..."<<endl;
-    }
-    
     FlannBasedMatcher matcher;
     vector<DMatch> matches;
 
     if (des1.empty() || des2.empty())
     {
-        cout<<"des1 or des2 is empty."<<endl;
         return matches;
     }
     
@@ -377,11 +371,6 @@ vector<DMatch> FeatureManager::Match(Mat des1, Mat des2)
             min_dist = dist;
         if (dist > max_dist)
             max_dist = dist;
-    }
-
-    if (debug_info)
-    {
-        cout<<"Match:: max dist = "<<max_dist<<", min dist = "<<min_dist<<endl;
     }
 
     //choose good matches
@@ -399,5 +388,40 @@ vector<DMatch> FeatureManager::Match(Mat des1, Mat des2)
     {
         cout<<"total good matches : "<<good_matches.size()<<endl;
     }
+    return good_matches;
+}
+
+vector<DMatch> match(Mat des1, Mat des2)
+{
+    FlannBasedMatcher matcher;
+    vector<DMatch> matches;
+
+    if (des1.empty() || des2.empty())
+    {
+        return matches;
+    }
+    
+    matcher.match( des1, des2, matches);
+    double max_dist = 0, min_dist = 100;
+    for (int i=0; i<des1.rows; i++)
+    {
+        double dist = matches[ i ].distance;
+        if (dist < min_dist)
+            min_dist = dist;
+        if (dist > max_dist)
+            max_dist = dist;
+    }
+
+    //choose good matches
+    vector<DMatch> good_matches;
+    
+    for (int i=0; i<des1.rows; i++)
+    {
+        if (matches[ i ].distance <= max(2*min_dist, match_min_dist))
+        {
+            good_matches.push_back(matches[ i ]);
+        }
+    }
+
     return good_matches;
 }

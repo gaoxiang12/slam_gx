@@ -79,6 +79,11 @@ string ParameterReader::GetPara( const string& para_name )
         return num2string(_max_pos_change);
     if (para_name == string("grayscale"))
         return _grayscale;
+    if (para_name == string("start_index"))
+        return num2string(_start_index);
+    if (para_name == string("end_index"))
+        return num2string(_end_index);
     
+    cerr<<"Unknown parameter: "<<para_name<<endl;
     return string("unknown_para_name");
 }
