@@ -6,12 +6,14 @@
 #include <string>
 #include <opencv2/core/core.hpp>
 #include <Eigen/Core>
+#include <iostream>
 using namespace cv;
 using namespace std;
 
 const bool debug_info = true; //是否输出调试信息
-const string parameter_file_addr = "/home/y/code/slam_gx/parameters.yaml";
+const string parameter_file_addr = "./parameters.yaml";
 const bool vision = true;
+const double PI = 3.141592654;
 //////////////////////////////////////////
 // 图像特征点相关参数
 const bool set_max_depth = false;    //是否设置最大距离
@@ -64,3 +66,24 @@ inline Eigen::Vector3d cv2g2o(Point3f p)
 {
     return Eigen::Vector3d(p.z, -p.x, -p.y);
 }
+
+//异常类
+class EXCEPTION
+{
+ public:
+    EXCEPTION(string desp="Unknown Exception") {
+        
+    }
+    void disp() {
+        cerr<<desp<<endl;
+    }
+ protected:
+    string desp;
+};
+
+class RANSAC_CANNOT_FIND_ENOUGH_INLIERS: public EXCEPTION
+{
+ public: RANSAC_CANNOT_FIND_ENOUGH_INLIERS() : EXCEPTION("RANSAC failed because cannot find enough inliers.") {
+        
+    }
+};

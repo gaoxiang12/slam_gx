@@ -4,6 +4,7 @@
 
 #include "FeatureManager.h"
 #include "ImageReader.h"
+#include "ParameterReader.h"
 #include "const.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
@@ -15,13 +16,17 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+
+
 FeatureManager2::FeatureManager2(FeatureGrabberBase* p, ImageReaderBase* pi)
 {
     _keyFrame_id = -1;
     _pFeatureGrabber = p;
     _keyFrame_pos = SE2(0, 0, 0);
     _pImageReader = pi;
-    
+    _step_time_keyframe = atoi(g_pParaReader->GetPara("step_time_keyframe").c_str());
+    _max_pos_change = atof( g_pParaReader->GetPara("max_pos_change").c_str() );
+    cout<<"max pos change = "<<_max_pos_change<<endl;
 }
 
 
@@ -37,15 +42,22 @@ void FeatureManager2::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor
     SE2 r = robot_curr;
     int ransac_success = pairwiseAlign(keypoints, feature_descriptor, r);
 
-    if (ransac_success == 0)
+    switch (ransac_success)
     {
-        //定义新的关键帧
+    case 0:
+        //差别太大，定义新的关键帧
+        //robot_curr = _keyFrame_pos * r;
         generate_new_keyframe(frame_id, robot_curr, keypoints, feature_descriptor);
-    }
-    else
-    {
-        cout<<"ransac success"<<endl;
+        break;
+    case 1:
+        //匹配成功，应用计算得到的相对变换
         robot_curr = _keyFrame_pos * r; //这里的r已经是相对变换了
+        break;
+    case 2:
+        //RANSAC失败，放弃该帧
+        //waitKey(0);
+        return ;
+        break;
     }
 }
 
@@ -60,21 +72,36 @@ int FeatureManager2::pairwiseAlign(vector<KeyPoint>& keypoints, Mat feature_desc
     cout<<"pairwise: matches = "<<matches.size()<<endl;
 
     //用匹配上的特征来算Ransac
-    SE2 delta = RANSAC(matches, keypoints);
+    SE2 delta;
+    try
+    {
+        delta = RANSAC(matches, keypoints);
+    } catch( RANSAC_CANNOT_FIND_ENOUGH_INLIERS e )
+    {
+        e.disp();
+        cerr<<"abort this frame"<<endl;
+        return 2;
+    }
 
-    double d = fabs(delta[0]) + fabs(delta[1]) + fabs(delta[2]);
-    if (d > 0.2)
+    double d = fabs(delta[0]) + fabs(delta[1]);
+    double a = delta[2];
+    if (a < -PI/2)
+        a += PI;
+    if (a > PI/2)
+        a -= PI;
+    d += fabs(a);
+    if (d > _max_pos_change)
     {
         //相差太大，认为是新的关键帧，RANSAC失败
         cout<<"result of RANSAC is too large."<<endl;
-        robot_curr = SE2(0,0,0);
+        // robot_curr = SE2(0,0,0);
         return 0;
     }
     robot_curr = delta;
     return 1;
 }
 
-SE2 FeatureManager2::RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp)
+SE2 FeatureManager2::RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp) throw (RANSAC_CANNOT_FIND_ENOUGH_INLIERS)
 {
     //Object & img
     vector<Point3f> obj;
@@ -95,6 +122,7 @@ SE2 FeatureManager2::RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp)
     cout<<"inliers = "<<inliers.rows<<endl;
     if (inliers.rows < 5)
     {
+        throw RANSAC_CANNOT_FIND_ENOUGH_INLIERS();
         return SE2(0,0,0);
     }
     vector<DMatch> correctMatches;
@@ -145,7 +173,7 @@ int FeatureManager2::generate_new_keyframe(int frame_id, SE2& robot_curr, vector
         //计算特征点的位置，注意算的是相对于关键帧的位置
         Point3f p = _pFeatureGrabber->ComputeFeaturePos( i, SE2(0,0,0) );
         if (p == Point3f(0,0,0))
-                    continue;
+            continue;
         LANDMARK landmark(0, p, Eigen::Vector3d(0,0,0), feature_descriptor.row(i), 1);
         _keyFrame_kp.push_back( keypoints[i] );
         landmark._pos_g2o = cv2g2o(landmark._pos_cv);
@@ -160,7 +188,7 @@ int FeatureManager2::generate_new_keyframe(int frame_id, SE2& robot_curr, vector
         _kf_landmarks[i]._descriptor.row(0).copyTo(kf_desp.row(i));
     }
 
-    waitKey(0);
+    waitKey(_step_time_keyframe);
     
     return 1;
 }

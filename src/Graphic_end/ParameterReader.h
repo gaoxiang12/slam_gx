@@ -48,7 +48,7 @@ class ParameterReader
     string _grayscale;      //是否以灰度图读取
 
     int _step_time;      //调试时每一次循环的等待时间
-
+    int _step_time_keyframe; //发现关键帧时的等待时间
     int _save_if_seen, _del_not_seen; //管理特征库的参数
 
     //图优化参数

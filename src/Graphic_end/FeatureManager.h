@@ -42,6 +42,8 @@ struct LANDMARK
 //全局函数
 vector<DMatch> match(Mat des1, Mat des2);
 
+
+
 class FeatureManager
 {
  public:
@@ -115,7 +117,7 @@ class FeatureManager2
   
  protected:
     int pairwiseAlign(vector<KeyPoint>& keypoints, Mat feature_descriptor, SE2& robot_curr);
-    SE2 RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp );
+    SE2 RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp ) throw( RANSAC_CANNOT_FIND_ENOUGH_INLIERS );
     int generate_new_keyframe(int frame_id, SE2& robot_curr, vector<KeyPoint>& keypoints, Mat feature_descriptor);
     
  protected:
@@ -131,5 +133,6 @@ class FeatureManager2
     Mat _keyFrame_rgb;
     Mat _curr_rgb;
     vector<KeyPoint> _keyFrame_kp;
-    
+    int _step_time_keyframe;
+    double _max_pos_change;
 };

@@ -49,6 +49,7 @@ ParameterReader::ParameterReader(const string& para_file )
     config[ "max_depth" ] >> _max_depth;
     config[ "max_landmark_per_loop" ] >> _max_landmark_per_loop;
     config[ "max_pos_change" ] >> _max_pos_change;
+    config[ "step_time_keyframe" ] >> _step_time_keyframe;
 }
 
 string ParameterReader::GetPara( const string& para_name )
@@ -83,7 +84,8 @@ string ParameterReader::GetPara( const string& para_name )
         return num2string(_start_index);
     if (para_name == string("end_index"))
         return num2string(_end_index);
-    
+    if (para_name == string("step_time_keyframe"))
+        return num2string(_step_time_keyframe);
     cerr<<"Unknown parameter: "<<para_name<<endl;
     return string("unknown_para_name");
 }
