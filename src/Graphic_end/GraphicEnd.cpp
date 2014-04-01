@@ -25,7 +25,8 @@ GraphicEnd::GraphicEnd()
                                          pFeatureGrabber,
                                          -atoi(g_pParaReader->GetPara("del_not_seen").c_str()));
 
-    pFeatureManager2 = new FeatureManager2( pFeatureGrabber );
+    pFeatureManager2 = new FeatureManager2( pFeatureGrabber,
+                                            pImageReader);
     
     if (vision == true)
     {

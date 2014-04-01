@@ -100,7 +100,7 @@ Point3f FeatureGrabber::ComputeFeaturePos(KeyPoint kp, SE2 robot_pos)
     
     //加上机器人的旋转和位移，就得到路标点在世界坐标系下的表示，注意要取逆
     //这是个2d的变换，不影响第三个维度，所以最后的z是不动的 
-    Eigen::Vector2d pw = robot_pos.inverse() * Eigen::Vector2d(pr[0], pr[1]);
+    Eigen::Vector2d pw = robot_pos * Eigen::Vector2d(pr[0], pr[1]);
 
     //再转换到cv的坐标系下
     return g2o2cv( Eigen::Vector3d(pw[0], pw[1], pr[2]) );

@@ -2,7 +2,7 @@
 # 数据库根目录位置：该目录下应该有rgb_index/和dep_index/两个文件夹，记录了rgb图与深度度
 data_source: /home/y/code/dataset/slam
 # 图像特征的检测算子与描述算子的名称
-detector_name: FAST
+detector_name: SIFT
 descriptor_name: SIFT
 # 数据的起始编号与结束编号
 start_index: 1
@@ -12,7 +12,7 @@ grayscale: yes
 # 最小匹配距离
 match_min_dist: 5
 # 每一次循环的等待时间（毫秒）
-step_time: 10
+step_time: 0
 
 # feature manager
 #连续看见多少帧则记录至仓库

@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include "FeatureGrabber.h"
+#include "ImageReader.h"
 
 using namespace std;
 using namespace cv;
@@ -107,7 +108,7 @@ class FeatureManager
 class FeatureManager2
 {
  public:
-    FeatureManager2(FeatureGrabberBase* p);
+    FeatureManager2(FeatureGrabberBase* p, ImageReaderBase* pi);
     ~FeatureManager2();
 
     void Input( vector<KeyPoint>& keypoints, Mat feature_descriptor, SE2& robot_curr, int frame_id);
@@ -120,8 +121,15 @@ class FeatureManager2
  protected:
     int _keyFrame_id; //关键帧的id
     vector<LANDMARK> _kf_landmarks;  //关键帧的landmarks
-
+    Mat kf_desp;
+    SE2 _keyFrame_pos;   //关键帧的位姿
 
     FeatureGrabberBase* _pFeatureGrabber;
+    ImageReaderBase* _pImageReader;
+
+    //显示数据
+    Mat _keyFrame_rgb;
+    Mat _curr_rgb;
+    vector<KeyPoint> _keyFrame_kp;
     
 };

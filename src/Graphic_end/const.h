@@ -15,9 +15,9 @@ const bool vision = true;
 //////////////////////////////////////////
 // 图像特征点相关参数
 const bool set_max_depth = false;    //是否设置最大距离
-const double max_depth = 25.0;     //默认得不到深度数据时，采用最大深度，并且在SLAM端要加上较大的不确定性，以m为单位
+const double max_depth = 20.0;     //默认得不到深度数据时，采用最大深度，并且在SLAM端要加上较大的不确定性，以m为单位
 //匹配相关
-const double match_min_dist = 50;  //小于这个距离才算匹配成功
+const double match_min_dist = 20;  //小于这个距离才算匹配成功
 const int max_landmark_per_loop = 100; //每回合增加到库中的路标上限，因为一帧内加入太多的路标用处也不大
 
 

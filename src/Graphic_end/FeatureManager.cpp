@@ -239,6 +239,8 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
 SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& keypoints)
 {
     // 构造目标点的序列
+
+
     if (debug_info)
     {
         cout<<"RANSAC: total good_landmark is "<<good_landmark_idx.size()<<endl;
@@ -412,6 +414,7 @@ vector<DMatch> match(Mat des1, Mat des2)
             max_dist = dist;
     }
 
+    cout<<"match: min dist = "<<min_dist<<endl;
     //choose good matches
     vector<DMatch> good_matches;
     
