@@ -4,6 +4,5 @@ bin
 log*
 debug*
 g2o*
-run*
 p3d.txt
 *.g2o
