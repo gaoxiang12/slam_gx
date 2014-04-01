@@ -4,6 +4,7 @@
  ****************************************/
 
 #pragma once
+#include "const.h"
 #include <string>
 #include <sstream>
 #include <iostream>

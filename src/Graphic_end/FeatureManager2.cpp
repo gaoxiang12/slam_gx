@@ -142,7 +142,8 @@ int FeatureManager2::generate_new_keyframe(int frame_id, SE2& robot_curr, vector
     //生成每个特征点的三维坐标，更新关键帧的路标
     for (size_t i=0; i<keypoints.size(); i++)
     {
-        Point3f p = _pFeatureGrabber->ComputeFeaturePos( i, robot_curr );
+        //计算特征点的位置，注意算的是相对于关键帧的位置
+        Point3f p = _pFeatureGrabber->ComputeFeaturePos( i, SE2(0,0,0) );
         if (p == Point3f(0,0,0))
                     continue;
         LANDMARK landmark(0, p, Eigen::Vector3d(0,0,0), feature_descriptor.row(i), 1);
