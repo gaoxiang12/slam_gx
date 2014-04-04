@@ -63,6 +63,7 @@ class ParameterReader
     int _max_landmark_per_loop; //每一帧增加到库中路标上限
     
     double _max_pos_change;
+    
 
 };
 

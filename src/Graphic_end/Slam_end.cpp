@@ -61,9 +61,9 @@ int SLAMEnd::optimize()
 //这一步会向图中增加新的结点与边
 int SLAMEnd::optimize_once()
 {
-    if (_pFeatureManager->_success == false)
+    static int count = 0;
+    if (_pGraphicEnd->_need_global_optimization == false)
     {
-        cerr<<"SLAMEnd: RANSAC failed. Skip optimization."<<endl;
         return -1;
     }
     //Step 1. 把当前机器人位置增加到pose图中
@@ -71,12 +71,15 @@ int SLAMEnd::optimize_once()
     //Step 2. 把与当前位置相关的路标，以及相连的边也加至图中
     AddLandmark();
     //Step 3. 优化
-    solve();
+    //if (count % solver_per_loops == 0)
+    //    solve();
     //Step 4. 反馈
-    feedback();
+    //feedback();
 
     //保存
     save();
+
+    count ++;
     return 1;
 }
 
@@ -92,7 +95,10 @@ void SLAMEnd::feedback()
     {
         cout<<"robot pos changed to:"<<(*esti)[0]<<", "<<(*esti)[1]<<", "<<(*esti)[2]<<endl;
     }
-    _pGraphicEnd->_robot_curr.fromVector(*esti);
+    SE2 s;
+    s.fromVector(*esti);
+    _pGraphicEnd->_robot_curr = s;
+    _pGraphicEnd->pFeatureManager2->setKeyFramePos( s );
     delete esti;
 
     //Step 2. 更新路标位置
@@ -137,11 +143,23 @@ void SLAMEnd::AddRobotPose()
 
     //将当前的机器人位置加入图中
     SE2 pr = _pGraphicEnd->_robot_curr;
+    cout<<"add vertex "<<_robot_id<<endl;
+    cout<<"pr = "<<pr[0]<<", "<<pr[1]<<", "<<pr[2]<<endl;
     VertexSE2* robot = new VertexSE2;
-    robot->setId( ROBOT_ID(_robot_id) );
+    robot->setId( _robot_id );
     robot->setEstimate(pr);
-    optimizer.addVertex(robot);
+    
 
+    bool re = optimizer.addVertex(robot);
+    cout<<re<<endl;
+
+    VertexSE2* p = dynamic_cast<VertexSE2*> (optimizer.vertex(_robot_id) );
+    if (p)
+        cout<<"vertex exist"<<endl;
+    else
+        cout<<"vertex does not exist"<<endl;
+    
+    _robot_id++;
     
     if (add_ransac_odo && _robot_id > 1)
     {
@@ -149,11 +167,12 @@ void SLAMEnd::AddRobotPose()
         VertexSE2* prev = dynamic_cast<VertexSE2*> (optimizer.vertex(_robot_id-2));
         if (prev)
         {
+            cout<<"add edge se2"<<endl;
             EdgeSE2* odo = new EdgeSE2;
             odo->vertices()[0] = optimizer.vertex( _robot_id - 2 );
             odo->vertices()[1] = optimizer.vertex( _robot_id - 1 );
-            odo->setMeasurement( SE2(0,0,0) ); //因为没有惯性测量设备，我们默认机器人没有移动
-            //odo->setMeasurement( _prev.inverse()*pr );  //或者，使用了RANSAC得到的结果，作为惯性测量
+            //odo->setMeasurement( SE2(0,0,0) ); //因为没有惯性测量设备，我们默认机器人没有移动
+            odo->setMeasurement( _prev.inverse()*pr );  //或者，使用了RANSAC得到的结果，作为惯性测量
             Matrix3d information, cov;
             cov.fill(0.);
             cov(0,0) = transNoiseX * transNoiseX;
@@ -186,7 +205,7 @@ void SLAMEnd::AddLandmark()
             
         //if (_pFeatureManager->_inlier[i] == false)
         {
-            //            continue;
+            //  continue;
         }
         int id = match[i] + LANDMARK_START_ID;
         VertexPointXY* landmark = dynamic_cast<VertexPointXY*>(optimizer.vertex(id));
@@ -207,13 +226,15 @@ void SLAMEnd::AddLandmark()
         }
 
         //增加current_state与landmark相连的那条边
-
+        Eigen::Vector2d m =  _pFeatureGrabber->GetObservation2d(_pFeatureManager->_match_keypoints[i]);
+        if (m == Vector2d(0,0))
+            continue;
         EdgeSE2PointXY* landmarkObservation = new EdgeSE2PointXY;
 
         //机器人位置所在的顶点，因为前面加过1了，现在就要减1
         landmarkObservation->vertices()[0] = optimizer.vertex( _robot_id - 1 + ROBOT_START_ID );
         landmarkObservation->vertices()[1] = optimizer.vertex( id );
-        landmarkObservation->setMeasurement( _pFeatureGrabber->GetObservation2d(_pFeatureManager->_match_keypoints[i]) );
+        landmarkObservation->setMeasurement( m );
         Matrix2d information, cov;
         cov.fill(0.);
         if ( l._pos_g2o[0] > 15 )

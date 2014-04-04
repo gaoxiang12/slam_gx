@@ -3,7 +3,6 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/highgui/highgui.hpp>
-#include <opencv2/nonfree/features2d.hpp>
 #include <opencv2/flann/flann.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/core/eigen.hpp>
@@ -80,6 +79,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     }
 
     //step 2: 用RANSAC将匹配成功的路标用来计算机器人的位置
+    
     if (debug_info)
     {
         cout<<"Step 2: RANSAC"<<endl;
@@ -88,7 +88,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
     {
         _match_idx = good_landmark_idx;
         _match_keypoints = good_keypoints;
-        
+        /*
         SE2 robot_new = RANSAC(good_landmark_idx, good_keypoints);
         if (_success == false )
         {
@@ -98,10 +98,9 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
                 return;
             }
         }
-        //检查新的位置与原先的位置是否差的太多
+
         Vector3d old_r = robot_curr.toVector(), new_r = robot_new.toVector();
-        double d = fabs(old_r[0]-new_r[0]) + fabs(old_r[1]-new_r[1]) + fabs(old_r[2]-new_r[2]);
-        if (d < max_pos_change && (new_r != Vector3d(0,0,0)))
+        if (new_r != Vector3d(0,0,0))
         {
             if (debug_info)
             {
@@ -122,7 +121,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
                 cout<<"after: robot is on "<<robot_new[0]<<", "<<robot_new[1]<<", rotation = "<<robot_new[2]<<endl;
             }
         }
-
+        */
         
     }
 
@@ -198,7 +197,7 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
         i++;
     }
 
-    ofstream kf("kp.txt");
+    ofstream kf("log/kp.txt");
     cout<<"good new feature:"<<good_new_feature.size()<<endl;
     //将未匹配到的新特征作为新路标放到缓存中，首先将计算路标的世界坐标
     int add_landmark_buffer=0;
@@ -239,14 +238,11 @@ void FeatureManager::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor,
 SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& keypoints)
 {
     // 构造目标点的序列
-
-
     if (debug_info)
     {
         cout<<"RANSAC: total good_landmark is "<<good_landmark_idx.size()<<endl;
         cout<<"RANSAC: total keypoints is "<<keypoints.size()<<endl;
     }
-    ofstream fout("ransac_object.txt");
     
     vector<Point3f> objectPoints;  //目标点，有x,y,z三个坐标，世界坐标系下
     
@@ -256,19 +252,14 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
         //期待后面有所改进吧
         LANDMARK t = GetLandmark(good_landmark_idx[i]);
         objectPoints.push_back(t._pos_cv);
-        fout<<t._pos_cv<<endl;
     }
-    fout.close();
 
-    fout.open("ransac_keypoint.txt");
     // 构造图像点的序列，有u,v两个坐标，在本地坐标系下
     vector<Point2f> imagePoints;
     for (size_t i=0; i<keypoints.size(); i++)
     {
         imagePoints.push_back(keypoints[i].pt);
-        fout<<keypoints[i].pt<<endl;
     }
-    fout.close();
 
     if (debug_info)
     {
@@ -309,8 +300,8 @@ SE2 FeatureManager::RANSAC(vector<int>& good_landmark_idx, vector<KeyPoint>& key
     
     for (int i=0; i<inliers.rows; i++)
     {
-        //_inlier[ inliers.at<int>(i, 0) ] = true;
-        _inlier[i] = true;   //全部当成inlier，测试g2o的robust核的处理能力
+        _inlier[ inliers.at<int>(i, 0) ] = true;
+        //_inlier[i] = true;   //全部当成inlier，测试g2o的robust核的处理能力
     }
     
     //将旋转向量转换成旋转矩阵

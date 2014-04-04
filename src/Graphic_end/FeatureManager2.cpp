@@ -18,14 +18,16 @@
 #include <iostream>
 
 
-FeatureManager2::FeatureManager2(FeatureGrabberBase* p, ImageReaderBase* pi)
+FeatureManager2::FeatureManager2(FeatureGrabberBase* p, ImageReaderBase* pi, FeatureManager* pf)
 {
+    _landmark_id = 0;
     _keyFrame_id = -1;
     _pFeatureGrabber = p;
     _keyFrame_pos = SE2(0, 0, 0);
     _pImageReader = pi;
     _step_time_keyframe = atoi(g_pParaReader->GetPara("step_time_keyframe").c_str());
     _max_pos_change = atof( g_pParaReader->GetPara("max_pos_change").c_str() );
+    _pFeatureManager = pf;
     cout<<"max pos change = "<<_max_pos_change<<endl;
 }
 
@@ -37,17 +39,23 @@ FeatureManager2::~FeatureManager2()
 
 void FeatureManager2::Input( vector<KeyPoint>& keypoints, Mat feature_descriptor, SE2& robot_curr, int frame_id)
 {
+   
     _curr_rgb = _pImageReader->GetRGB();
     //Step1, 将关键帧与输入进行两两匹配
     SE2 r = robot_curr;
     int ransac_success = pairwiseAlign(keypoints, feature_descriptor, r);
-
+    // rasac_success will reture different values to indicate what happened.
+    
     switch (ransac_success)
     {
     case 0:
         //差别太大，定义新的关键帧
         //robot_curr = _keyFrame_pos * r;
         generate_new_keyframe(frame_id, robot_curr, keypoints, feature_descriptor);
+        _pFeatureManager->Input(keypoints, feature_descriptor, robot_curr);
+        //waitKey(0);
+        throw GRAPHIC_END_NEED_GLOBAL_OPTIMIZATION();
+        
         break;
     case 1:
         //匹配成功，应用计算得到的相对变换
@@ -104,6 +112,8 @@ int FeatureManager2::pairwiseAlign(vector<KeyPoint>& keypoints, Mat feature_desc
 SE2 FeatureManager2::RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp) throw (RANSAC_CANNOT_FIND_ENOUGH_INLIERS)
 {
     //Object & img
+    _correctMatches.clear();
+
     vector<Point3f> obj;
     vector<Point2f> img;
     for (size_t i=0; i<matches.size(); i++)
@@ -125,16 +135,15 @@ SE2 FeatureManager2::RANSAC( vector<DMatch>& matches, vector<KeyPoint>& new_kp) 
         throw RANSAC_CANNOT_FIND_ENOUGH_INLIERS();
         return SE2(0,0,0);
     }
-    vector<DMatch> correctMatches;
-
+    
     for (int i=0; i<inliers.rows; i++)
-        correctMatches.push_back( matches[inliers.at<int>(i,0)] );
+        _correctMatches.push_back( matches[inliers.at<int>(i,0)] );
     
     if ( vision )
     {
         //画出匹配的结果
         Mat img_matches;
-        drawMatches( _keyFrame_rgb, _keyFrame_kp, _curr_rgb, new_kp, correctMatches, img_matches, Scalar::all(-1), CV_RGB(255,255,255), Mat(), 4 );
+        drawMatches( _keyFrame_rgb, _keyFrame_kp, _curr_rgb, new_kp, _correctMatches, img_matches, Scalar::all(-1), CV_RGB(255,255,255), Mat(), 4 );
         imshow("match", img_matches);
     }
     
@@ -174,7 +183,7 @@ int FeatureManager2::generate_new_keyframe(int frame_id, SE2& robot_curr, vector
         Point3f p = _pFeatureGrabber->ComputeFeaturePos( i, SE2(0,0,0) );
         if (p == Point3f(0,0,0))
             continue;
-        LANDMARK landmark(0, p, Eigen::Vector3d(0,0,0), feature_descriptor.row(i), 1);
+        LANDMARK landmark(_landmark_id++, p, Eigen::Vector3d(0,0,0), feature_descriptor.row(i), 1);
         _keyFrame_kp.push_back( keypoints[i] );
         landmark._pos_g2o = cv2g2o(landmark._pos_cv);
         _kf_landmarks.push_back(landmark);

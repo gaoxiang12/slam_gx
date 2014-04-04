@@ -1,0 +1,1241 @@
+init parameterReader, file addr = ./parameters.yaml
+max pos change = 0.2
+Slam end init over.
+
+-- GraphicEnd::loop 0 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1758 keypoints.
+keypoint size = 1758 after unique().
+!<<<<<<<<<< manager2: generate new key frame!>>>>>>>>>>
+desp size of key frame is 1262
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+good new feature:1758
+
+*** Feature Manager Report ***
+landmark library : 0
+landmark buffer : 1262
+Hit 0 landmarks in lib
+Hit 0 landmarks in buffer
+Add 0 landmark from buffer to lib
+Add 1758 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+Opt: add robot pose.
+add vertex 0
+pr = 0, 0, 0
+1
+vertex exist
+g2o: match size = 0
+g2o: add 0 new landmark, 0 observations.
+
+-- GraphicEnd::loop 1 --
+graphic end : robot in on 0, 0, rotation = 0
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1724 keypoints.
+keypoint size = 1724 after unique().
+match: min dist = 5.09902
+pairwise: matches = 630
+inliers = 629
+ransac result: 0.000162995, -3.95247e-05, -9.35193e-06
+
+-- GraphicEnd::loop 2 --
+graphic end : robot in on 0.000162995, -3.95247e-05, rotation = -9.35193e-06
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1742 keypoints.
+keypoint size = 1742 after unique().
+match: min dist = 5.09902
+pairwise: matches = 655
+inliers = 555
+ransac result: -0.000956697, -0.00100669, 0.000781413
+
+-- GraphicEnd::loop 3 --
+graphic end : robot in on -0.000956697, -0.00100669, rotation = 0.000781413
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1741 keypoints.
+keypoint size = 1741 after unique().
+match: min dist = 4.79583
+pairwise: matches = 637
+inliers = 634
+ransac result: -0.000114124, 1.42543e-06, -1.97529e-06
+
+-- GraphicEnd::loop 4 --
+graphic end : robot in on -0.000114124, 1.42543e-06, rotation = -1.97529e-06
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1760 keypoints.
+keypoint size = 1760 after unique().
+match: min dist = 5.09902
+pairwise: matches = 640
+inliers = 634
+ransac result: -4.5289e-05, -9.76297e-07, 1.3905e-05
+
+-- GraphicEnd::loop 5 --
+graphic end : robot in on -4.5289e-05, -9.76297e-07, rotation = 1.3905e-05
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1734 keypoints.
+keypoint size = 1734 after unique().
+match: min dist = 5.38516
+pairwise: matches = 623
+inliers = 622
+ransac result: 0.000202635, -0.000197206, -1.17131e-05
+
+-- GraphicEnd::loop 6 --
+graphic end : robot in on 0.000202635, -0.000197206, rotation = -1.17131e-05
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1718 keypoints.
+keypoint size = 1718 after unique().
+match: min dist = 4.69042
+pairwise: matches = 647
+inliers = 646
+ransac result: -9.47573e-06, -5.17071e-05, 1.36255e-05
+
+-- GraphicEnd::loop 7 --
+graphic end : robot in on -9.47573e-06, -5.17071e-05, rotation = 1.36255e-05
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1772 keypoints.
+keypoint size = 1772 after unique().
+match: min dist = 5.91608
+pairwise: matches = 599
+inliers = 597
+ransac result: 0.000143156, -0.000166582, -1.0559e-05
+
+-- GraphicEnd::loop 8 --
+graphic end : robot in on 0.000143156, -0.000166582, rotation = -1.0559e-05
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1722 keypoints.
+keypoint size = 1722 after unique().
+match: min dist = 7.87401
+pairwise: matches = 517
+inliers = 515
+ransac result: -0.000110442, -0.000172014, -6.98536e-07
+
+-- GraphicEnd::loop 9 --
+graphic end : robot in on -0.000110442, -0.000172014, rotation = -6.98536e-07
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1719 keypoints.
+keypoint size = 1719 after unique().
+match: min dist = 8.3666
+pairwise: matches = 165
+inliers = 162
+ransac result: -0.00046472, -0.000362768, 2.37053e-05
+
+-- GraphicEnd::loop 10 --
+graphic end : robot in on -0.00046472, -0.000362768, rotation = 2.37053e-05
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1718 keypoints.
+keypoint size = 1718 after unique().
+match: min dist = 11.4455
+pairwise: matches = 107
+inliers = 101
+ransac result: -0.00138007, -0.000947551, 0.000330116
+
+-- GraphicEnd::loop 11 --
+graphic end : robot in on -0.00138007, -0.000947551, rotation = 0.000330116
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1693 keypoints.
+keypoint size = 1693 after unique().
+match: min dist = 10.0995
+pairwise: matches = 117
+inliers = 104
+ransac result: 0.008059, 0.0115306, -0.0102584
+
+-- GraphicEnd::loop 12 --
+graphic end : robot in on 0.008059, 0.0115306, rotation = -0.0102584
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1762 keypoints.
+keypoint size = 1762 after unique().
+match: min dist = 12.3693
+pairwise: matches = 178
+inliers = 166
+ransac result: 0.00231198, -0.000156526, -0.00182572
+
+-- GraphicEnd::loop 13 --
+graphic end : robot in on 0.00231198, -0.000156526, rotation = -0.00182572
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1751 keypoints.
+keypoint size = 1751 after unique().
+match: min dist = 6.16441
+pairwise: matches = 429
+inliers = 427
+ransac result: 0.000472367, -0.000823349, -0.00307139
+
+-- GraphicEnd::loop 14 --
+graphic end : robot in on 0.000472367, -0.000823349, rotation = -0.00307139
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1695 keypoints.
+keypoint size = 1695 after unique().
+match: min dist = 10
+pairwise: matches = 92
+inliers = 89
+ransac result: -0.00636618, -0.000698432, -0.00393405
+
+-- GraphicEnd::loop 15 --
+graphic end : robot in on -0.00636618, -0.000698432, rotation = -0.00393405
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1695 keypoints.
+keypoint size = 1695 after unique().
+match: min dist = 8
+pairwise: matches = 194
+inliers = 193
+ransac result: -0.000838129, -0.000683664, -0.00733989
+
+-- GraphicEnd::loop 16 --
+graphic end : robot in on -0.000838129, -0.000683664, rotation = -0.00733989
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1618 keypoints.
+keypoint size = 1618 after unique().
+match: min dist = 10.3923
+pairwise: matches = 232
+inliers = 229
+ransac result: 0.000182547, -0.00134568, -0.0105233
+
+-- GraphicEnd::loop 17 --
+graphic end : robot in on 0.000182547, -0.00134568, rotation = -0.0105233
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1608 keypoints.
+keypoint size = 1608 after unique().
+match: min dist = 11.1355
+pairwise: matches = 84
+inliers = 83
+ransac result: -0.00235719, 0.00150637, -0.0168232
+
+-- GraphicEnd::loop 18 --
+graphic end : robot in on -0.00235719, 0.00150637, rotation = -0.0168232
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1535 keypoints.
+keypoint size = 1535 after unique().
+match: min dist = 11.2694
+pairwise: matches = 107
+inliers = 102
+ransac result: 0.00108769, -0.00241256, -0.0212531
+
+-- GraphicEnd::loop 19 --
+graphic end : robot in on 0.00108769, -0.00241256, rotation = -0.0212531
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1410 keypoints.
+keypoint size = 1410 after unique().
+match: min dist = 14.2127
+pairwise: matches = 79
+inliers = 71
+ransac result: -0.00159629, -0.00302911, -0.0282904
+
+-- GraphicEnd::loop 20 --
+graphic end : robot in on -0.00159629, -0.00302911, rotation = -0.0282904
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1458 keypoints.
+keypoint size = 1458 after unique().
+match: min dist = 16.7631
+pairwise: matches = 156
+inliers = 154
+ransac result: 0.00049218, -0.00304608, -0.0351207
+
+-- GraphicEnd::loop 21 --
+graphic end : robot in on 0.00049218, -0.00304608, rotation = -0.0351207
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1598 keypoints.
+keypoint size = 1598 after unique().
+match: min dist = 15.5242
+pairwise: matches = 127
+inliers = 122
+ransac result: -0.00302073, -0.00428463, -0.0403465
+
+-- GraphicEnd::loop 22 --
+graphic end : robot in on -0.00302073, -0.00428463, rotation = -0.0403465
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1594 keypoints.
+keypoint size = 1594 after unique().
+match: min dist = 11.4018
+pairwise: matches = 57
+inliers = 56
+ransac result: -0.00803389, -0.00391005, -0.0464129
+
+-- GraphicEnd::loop 23 --
+graphic end : robot in on -0.00803389, -0.00391005, rotation = -0.0464129
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1508 keypoints.
+keypoint size = 1508 after unique().
+match: min dist = 14.6629
+pairwise: matches = 72
+inliers = 69
+ransac result: -0.000515708, -0.000112993, -0.0564544
+
+-- GraphicEnd::loop 24 --
+graphic end : robot in on -0.000515708, -0.000112993, rotation = -0.0564544
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1469 keypoints.
+keypoint size = 1469 after unique().
+match: min dist = 17.6635
+pairwise: matches = 90
+inliers = 84
+ransac result: -0.00280291, 0.000408118, -0.0655466
+
+-- GraphicEnd::loop 25 --
+graphic end : robot in on -0.00280291, 0.000408118, rotation = -0.0655466
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1462 keypoints.
+keypoint size = 1462 after unique().
+match: min dist = 21.6564
+pairwise: matches = 157
+inliers = 109
+ransac result: -0.00875427, -0.0166397, -0.0621696
+
+-- GraphicEnd::loop 26 --
+graphic end : robot in on -0.00875427, -0.0166397, rotation = -0.0621696
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1541 keypoints.
+keypoint size = 1541 after unique().
+match: min dist = 20.2731
+pairwise: matches = 100
+inliers = 97
+ransac result: -0.000865017, -0.00457976, -0.0802799
+
+-- GraphicEnd::loop 27 --
+graphic end : robot in on -0.000865017, -0.00457976, rotation = -0.0802799
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1536 keypoints.
+keypoint size = 1536 after unique().
+match: min dist = 18.7617
+pairwise: matches = 53
+inliers = 52
+ransac result: -0.00260985, -0.00677099, -0.0876336
+
+-- GraphicEnd::loop 28 --
+graphic end : robot in on -0.00260985, -0.00677099, rotation = -0.0876336
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1483 keypoints.
+keypoint size = 1483 after unique().
+match: min dist = 24.1868
+pairwise: matches = 103
+inliers = 96
+ransac result: 0.0062414, 0.00832563, -0.10975
+
+-- GraphicEnd::loop 29 --
+graphic end : robot in on 0.0062414, 0.00832563, rotation = -0.10975
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1461 keypoints.
+keypoint size = 1461 after unique().
+match: min dist = 20.445
+pairwise: matches = 37
+inliers = 37
+ransac result: 0.00346651, 0.00284303, -0.115983
+
+-- GraphicEnd::loop 30 --
+graphic end : robot in on 0.00346651, 0.00284303, rotation = -0.115983
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1639 keypoints.
+keypoint size = 1639 after unique().
+match: min dist = 22.4054
+pairwise: matches = 63
+inliers = 61
+ransac result: 0.000813589, -0.00622265, -0.11973
+
+-- GraphicEnd::loop 31 --
+graphic end : robot in on 0.000813589, -0.00622265, rotation = -0.11973
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1779 keypoints.
+keypoint size = 1779 after unique().
+match: min dist = 16.5529
+pairwise: matches = 14
+inliers = 13
+ransac result: -0.00680244, -0.00818371, -0.127701
+
+-- GraphicEnd::loop 32 --
+graphic end : robot in on -0.00680244, -0.00818371, rotation = -0.127701
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1749 keypoints.
+keypoint size = 1749 after unique().
+match: min dist = 27.8029
+pairwise: matches = 127
+inliers = 117
+ransac result: 0.00251209, -0.00717238, -0.136857
+
+-- GraphicEnd::loop 33 --
+graphic end : robot in on 0.00251209, -0.00717238, rotation = -0.136857
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1778 keypoints.
+keypoint size = 1778 after unique().
+match: min dist = 27.6225
+pairwise: matches = 101
+inliers = 92
+ransac result: 0.00142567, -0.00686816, -0.146419
+
+-- GraphicEnd::loop 34 --
+graphic end : robot in on 0.00142567, -0.00686816, rotation = -0.146419
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1853 keypoints.
+keypoint size = 1853 after unique().
+match: min dist = 25.1794
+pairwise: matches = 47
+inliers = 44
+ransac result: -0.000376532, -0.0093604, -0.153968
+
+-- GraphicEnd::loop 35 --
+graphic end : robot in on -0.000376532, -0.0093604, rotation = -0.153968
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1805 keypoints.
+keypoint size = 1805 after unique().
+match: min dist = 26.6646
+pairwise: matches = 80
+inliers = 71
+ransac result: 0.00494205, -0.00619798, -0.166749
+
+-- GraphicEnd::loop 36 --
+graphic end : robot in on 0.00494205, -0.00619798, rotation = -0.166749
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1823 keypoints.
+keypoint size = 1823 after unique().
+match: min dist = 28.4956
+pairwise: matches = 87
+inliers = 72
+ransac result: 0.00421376, -0.00374094, -0.177683
+
+-- GraphicEnd::loop 37 --
+graphic end : robot in on 0.00421376, -0.00374094, rotation = -0.177683
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1817 keypoints.
+keypoint size = 1817 after unique().
+match: min dist = 29.5466
+pairwise: matches = 89
+inliers = 78
+ransac result: -0.00160729, -0.00928293, -0.184398
+
+-- GraphicEnd::loop 38 --
+graphic end : robot in on -0.00160729, -0.00928293, rotation = -0.184398
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1829 keypoints.
+keypoint size = 1829 after unique().
+match: min dist = 29.4958
+pairwise: matches = 66
+inliers = 53
+ransac result: 0.0017566, -0.00097541, -0.200508
+result of RANSAC is too large.
+!<<<<<<<<<< manager2: generate new key frame!>>>>>>>>>>
+desp size of key frame is 971
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+landmark library is empty. All features will be treated as new feature.
+Step 2: RANSAC
+step 3, compare new features to buffer
+total good matches : 64
+good new feature:1829
+
+*** Feature Manager Report ***
+landmark library : 61
+landmark buffer : 2108
+Hit 0 landmarks in lib
+Hit 61 landmarks in buffer
+Add 61 landmark from buffer to lib
+Add 1765 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+Opt: add robot pose.
+add vertex 1
+pr = -0.00160729, -0.00928293, -0.184398
+1
+vertex exist
+add edge se2
+g2o: match size = 0
+g2o: add 0 new landmark, 0 observations.
+
+-- GraphicEnd::loop 39 --
+graphic end : robot in on -0.00160729, -0.00928293, rotation = -0.184398
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1832 keypoints.
+keypoint size = 1832 after unique().
+match: min dist = 10.3923
+pairwise: matches = 101
+inliers = 100
+ransac result: -0.000729319, -0.000104288, -0.0101808
+
+-- GraphicEnd::loop 40 --
+graphic end : robot in on -0.00234337, -0.00925173, rotation = -0.194578
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1857 keypoints.
+keypoint size = 1857 after unique().
+match: min dist = 11.6189
+pairwise: matches = 72
+inliers = 72
+ransac result: -0.000936502, 0.0011093, -0.0207373
+
+-- GraphicEnd::loop 41 --
+graphic end : robot in on -0.00232452, -0.00802073, rotation = -0.205135
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1977 keypoints.
+keypoint size = 1977 after unique().
+match: min dist = 12.4097
+pairwise: matches = 85
+inliers = 84
+ransac result: 0.00144398, -0.00206929, -0.029149
+
+-- GraphicEnd::loop 42 --
+graphic end : robot in on -0.000567208, -0.0115819, rotation = -0.213547
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1917 keypoints.
+keypoint size = 1917 after unique().
+match: min dist = 13.9284
+pairwise: matches = 123
+inliers = 121
+ransac result: 0.00109462, -0.00268117, -0.0384844
+
+-- GraphicEnd::loop 43 --
+graphic end : robot in on -0.00102283, -0.0121194, rotation = -0.222882
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1999 keypoints.
+keypoint size = 1999 after unique().
+match: min dist = 11.5326
+pairwise: matches = 44
+inliers = 44
+ransac result: 0.0011387, -0.00612195, -0.0454611
+
+-- GraphicEnd::loop 44 --
+graphic end : robot in on -0.00161038, -0.0155099, rotation = -0.229859
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1895 keypoints.
+keypoint size = 1895 after unique().
+match: min dist = 13.2288
+pairwise: matches = 56
+inliers = 56
+ransac result: 0.00236426, -0.0090236, -0.0535936
+
+-- GraphicEnd::loop 45 --
+graphic end : robot in on -0.000937632, -0.0185871, rotation = -0.237991
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1953 keypoints.
+keypoint size = 1953 after unique().
+match: min dist = 16.6433
+pairwise: matches = 136
+inliers = 133
+ransac result: 0.000868716, -0.0031619, -0.0675344
+
+-- GraphicEnd::loop 46 --
+graphic end : robot in on -0.00133305, -0.0125505, rotation = -0.251932
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1898 keypoints.
+keypoint size = 1898 after unique().
+match: min dist = 19.4422
+pairwise: matches = 165
+inliers = 155
+ransac result: 0.00357261, -0.00271829, -0.0784304
+
+-- GraphicEnd::loop 47 --
+graphic end : robot in on 0.00140635, -0.0126102, rotation = -0.262828
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1885 keypoints.
+keypoint size = 1885 after unique().
+match: min dist = 19.1572
+pairwise: matches = 139
+inliers = 135
+ransac result: 0.00297454, -0.00590701, -0.0862163
+
+-- GraphicEnd::loop 48 --
+graphic end : robot in on 0.000233748, -0.0156352, rotation = -0.270614
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1891 keypoints.
+keypoint size = 1891 after unique().
+match: min dist = 19.975
+pairwise: matches = 134
+inliers = 127
+ransac result: 0.00135314, -0.00376437, -0.0979985
+
+-- GraphicEnd::loop 49 --
+graphic end : robot in on -0.000967308, -0.0132316, rotation = -0.282396
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1912 keypoints.
+keypoint size = 1912 after unique().
+match: min dist = 19.6977
+pairwise: matches = 150
+inliers = 135
+ransac result: 0.00332593, -0.00542669, -0.107368
+
+-- GraphicEnd::loop 50 --
+graphic end : robot in on 0.000667251, -0.0152274, rotation = -0.291766
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1912 keypoints.
+keypoint size = 1912 after unique().
+match: min dist = 18.3303
+pairwise: matches = 85
+inliers = 78
+ransac result: 0.00494315, -0.00643543, -0.117858
+
+-- GraphicEnd::loop 51 --
+graphic end : robot in on 0.0020721, -0.0165156, rotation = -0.302256
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1913 keypoints.
+keypoint size = 1913 after unique().
+match: min dist = 22.5389
+pairwise: matches = 149
+inliers = 133
+ransac result: 0.00649855, -0.00816388, -0.127184
+
+-- GraphicEnd::loop 52 --
+graphic end : robot in on 0.00328421, -0.0184999, rotation = -0.311581
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1932 keypoints.
+keypoint size = 1932 after unique().
+match: min dist = 21.6102
+pairwise: matches = 98
+inliers = 87
+ransac result: 0.00805064, -0.0127235, -0.134197
+
+-- GraphicEnd::loop 53 --
+graphic end : robot in on 0.00397395, -0.0232669, rotation = -0.318595
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1964 keypoints.
+keypoint size = 1964 after unique().
+match: min dist = 25.7876
+pairwise: matches = 168
+inliers = 147
+ransac result: 0.00723807, -0.00877449, -0.146618
+
+-- GraphicEnd::loop 54 --
+graphic end : robot in on 0.00389923, -0.0192358, rotation = -0.331016
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1933 keypoints.
+keypoint size = 1933 after unique().
+match: min dist = 20.4939
+pairwise: matches = 39
+inliers = 38
+ransac result: 0.0109, -0.0116875, -0.153778
+
+-- GraphicEnd::loop 55 --
+graphic end : robot in on 0.00696494, -0.0227708, rotation = -0.338176
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1868 keypoints.
+keypoint size = 1868 after unique().
+match: min dist = 25.0998
+pairwise: matches = 103
+inliers = 87
+ransac result: 0.0086512, -0.00771954, -0.167746
+
+-- GraphicEnd::loop 56 --
+graphic end : robot in on 0.00548184, -0.0184578, rotation = -0.352144
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1904 keypoints.
+keypoint size = 1904 after unique().
+match: min dist = 24.1454
+pairwise: matches = 78
+inliers = 62
+ransac result: 0.0132417, -0.0200534, -0.169395
+result of RANSAC is too large.
+!<<<<<<<<<< manager2: generate new key frame!>>>>>>>>>>
+desp size of key frame is 835
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+total good matches : 36
+Step 2: RANSAC
+step 3, compare new features to buffer
+total good matches : 258
+good new feature:1868
+
+*** Feature Manager Report ***
+landmark library : 162
+landmark buffer : 2438
+Hit 36 landmarks in lib
+Hit 227 landmarks in buffer
+Add 101 landmark from buffer to lib
+Add 1610 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+Opt: add robot pose.
+add vertex 2
+pr = 0.00548184, -0.0184578, -0.352144
+1
+vertex exist
+add edge se2
+g2o: match size = 36
+g2o: add 29 new landmark, 36 observations.
+
+-- GraphicEnd::loop 57 --
+graphic end : robot in on 0.00548184, -0.0184578, rotation = -0.352144
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1892 keypoints.
+keypoint size = 1892 after unique().
+match: min dist = 10.3923
+pairwise: matches = 89
+inliers = 87
+ransac result: -0.00103858, 0.00722234, -0.0163662
+
+-- GraphicEnd::loop 58 --
+graphic end : robot in on 0.00699806, -0.0113205, rotation = -0.36851
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1885 keypoints.
+keypoint size = 1885 after unique().
+match: min dist = 10.247
+pairwise: matches = 62
+inliers = 60
+ransac result: -0.00219115, 0.000614494, -0.0208622
+
+-- GraphicEnd::loop 59 --
+graphic end : robot in on 0.00363709, -0.0171253, rotation = -0.373006
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1961 keypoints.
+keypoint size = 1961 after unique().
+match: min dist = 10.8628
+pairwise: matches = 64
+inliers = 62
+ransac result: 0.0009145, -0.00821096, -0.024205
+
+-- GraphicEnd::loop 60 --
+graphic end : robot in on 0.00350817, -0.0264803, rotation = -0.376349
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1892 keypoints.
+keypoint size = 1892 after unique().
+match: min dist = 12.6886
+pairwise: matches = 91
+inliers = 86
+ransac result: -0.000193179, -0.00320072, -0.0379859
+
+-- GraphicEnd::loop 61 --
+graphic end : robot in on 0.00419655, -0.0213955, rotation = -0.39013
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1790 keypoints.
+keypoint size = 1790 after unique().
+match: min dist = 10.8167
+pairwise: matches = 42
+inliers = 42
+ransac result: 0.00364835, -0.00637207, -0.046503
+
+-- GraphicEnd::loop 62 --
+graphic end : robot in on 0.00670851, -0.0256972, rotation = -0.398647
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1750 keypoints.
+keypoint size = 1750 after unique().
+match: min dist = 18
+pairwise: matches = 154
+inliers = 145
+ransac result: 0.00503106, -0.00226352, -0.0599188
+
+-- GraphicEnd::loop 63 --
+graphic end : robot in on 0.00942345, -0.0223177, rotation = -0.412063
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1866 keypoints.
+keypoint size = 1866 after unique().
+match: min dist = 15.5242
+pairwise: matches = 92
+inliers = 88
+ransac result: 0.00519772, -0.0107285, -0.0651827
+
+-- GraphicEnd::loop 64 --
+graphic end : robot in on 0.00666021, -0.0303208, rotation = -0.417327
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1801 keypoints.
+keypoint size = 1801 after unique().
+match: min dist = 14.4222
+pairwise: matches = 52
+inliers = 49
+ransac result: 0.00455664, -0.00551056, -0.0790577
+
+-- GraphicEnd::loop 65 --
+graphic end : robot in on 0.00785821, -0.0252019, rotation = -0.431202
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1932 keypoints.
+keypoint size = 1932 after unique().
+match: min dist = 17.8885
+pairwise: matches = 92
+inliers = 76
+ransac result: 0.00465607, -0.00835254, -0.0884651
+
+-- GraphicEnd::loop 66 --
+graphic end : robot in on 0.0069713, -0.0279038, rotation = -0.440609
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1898 keypoints.
+keypoint size = 1898 after unique().
+match: min dist = 19.7737
+pairwise: matches = 92
+inliers = 70
+ransac result: 0.00351968, -0.00957453, -0.098109
+
+-- GraphicEnd::loop 67 --
+graphic end : robot in on 0.00548318, -0.0286588, rotation = -0.450253
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1880 keypoints.
+keypoint size = 1880 after unique().
+match: min dist = 18.4662
+pairwise: matches = 71
+inliers = 54
+ransac result: 0.0126673, -0.0173577, -0.103383
+
+-- GraphicEnd::loop 68 --
+graphic end : robot in on 0.0113849, -0.0391194, rotation = -0.455527
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1954 keypoints.
+keypoint size = 1954 after unique().
+match: min dist = 21.4009
+pairwise: matches = 103
+inliers = 80
+ransac result: 0.0218876, -0.0120358, -0.118151
+
+-- GraphicEnd::loop 69 --
+graphic end : robot in on 0.021875, -0.0373043, rotation = -0.470295
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1919 keypoints.
+keypoint size = 1919 after unique().
+match: min dist = 18.9737
+pairwise: matches = 47
+inliers = 35
+ransac result: 0.0190862, -0.0205447, -0.123163
+
+-- GraphicEnd::loop 70 --
+graphic end : robot in on 0.0163107, -0.0443248, rotation = -0.475307
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1896 keypoints.
+keypoint size = 1896 after unique().
+match: min dist = 22.3159
+pairwise: matches = 85
+inliers = 63
+ransac result: 0.0215122, -0.00975912, -0.141585
+
+-- GraphicEnd::loop 71 --
+graphic end : robot in on 0.0223079, -0.0350379, rotation = -0.493729
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1810 keypoints.
+keypoint size = 1810 after unique().
+match: min dist = 24.0208
+pairwise: matches = 100
+inliers = 70
+ransac result: 0.0230701, -0.0091915, -0.153886
+
+-- GraphicEnd::loop 72 --
+graphic end : robot in on 0.023966, -0.0350424, rotation = -0.50603
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1761 keypoints.
+keypoint size = 1761 after unique().
+match: min dist = 25.7099
+pairwise: matches = 98
+inliers = 74
+ransac result: 0.0242911, -0.0130569, -0.163099
+result of RANSAC is too large.
+!<<<<<<<<<< manager2: generate new key frame!>>>>>>>>>>
+desp size of key frame is 692
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+total good matches : 50
+Step 2: RANSAC
+step 3, compare new features to buffer
+total good matches : 17
+good new feature:1711
+
+*** Feature Manager Report ***
+landmark library : 179
+landmark buffer : 3048
+Hit 50 landmarks in lib
+Hit 17 landmarks in buffer
+Add 17 landmark from buffer to lib
+Add 1694 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+Opt: add robot pose.
+add vertex 3
+pr = 0.023966, -0.0350424, -0.50603
+1
+vertex exist
+add edge se2
+g2o: match size = 50
+g2o: add 28 new landmark, 50 observations.
+
+-- GraphicEnd::loop 73 --
+graphic end : robot in on 0.023966, -0.0350424, rotation = -0.50603
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1728 keypoints.
+keypoint size = 1728 after unique().
+match: min dist = 10.0499
+pairwise: matches = 49
+inliers = 49
+ransac result: -0.00250675, -0.00195107, -0.0107134
+
+-- GraphicEnd::loop 74 --
+graphic end : robot in on 0.0208277, -0.0355339, rotation = -0.516744
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1706 keypoints.
+keypoint size = 1706 after unique().
+match: min dist = 12.53
+pairwise: matches = 76
+inliers = 73
+ransac result: 0.00359888, 0.000841725, -0.0239143
+
+-- GraphicEnd::loop 75 --
+graphic end : robot in on 0.0275218, -0.0360506, rotation = -0.529944
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1774 keypoints.
+keypoint size = 1774 after unique().
+match: min dist = 10.6771
+pairwise: matches = 32
+inliers = 30
+ransac result: 0.011121, -0.00866313, -0.0278038
+
+-- GraphicEnd::loop 76 --
+graphic end : robot in on 0.0294941, -0.0480103, rotation = -0.533834
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1734 keypoints.
+keypoint size = 1734 after unique().
+match: min dist = 12.7279
+pairwise: matches = 53
+inliers = 49
+ransac result: 0.00502447, -0.00191063, -0.0456689
+
+-- GraphicEnd::loop 77 --
+graphic end : robot in on 0.0274347, -0.039149, rotation = -0.551699
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1746 keypoints.
+keypoint size = 1746 after unique().
+match: min dist = 12.49
+pairwise: matches = 57
+inliers = 53
+ransac result: 0.0160812, -0.00399342, -0.0541376
+
+-- GraphicEnd::loop 78 --
+graphic end : robot in on 0.0360962, -0.0463301, rotation = -0.560168
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1845 keypoints.
+keypoint size = 1845 after unique().
+match: min dist = 15.6205
+pairwise: matches = 68
+inliers = 58
+ransac result: 0.0203051, -0.00189443, -0.0670065
+
+-- GraphicEnd::loop 79 --
+graphic end : robot in on 0.0408081, -0.0465415, rotation = -0.573037
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1710 keypoints.
+keypoint size = 1710 after unique().
+match: min dist = 16.1245
+pairwise: matches = 61
+inliers = 48
+ransac result: 0.0201236, -0.00349767, -0.076731
+
+-- GraphicEnd::loop 80 --
+graphic end : robot in on 0.0398722, -0.0478558, rotation = -0.582761
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1650 keypoints.
+keypoint size = 1650 after unique().
+match: min dist = 18.0278
+pairwise: matches = 65
+inliers = 55
+ransac result: 0.0221629, -0.00355602, -0.0873697
+
+-- GraphicEnd::loop 81 --
+graphic end : robot in on 0.0416277, -0.0488953, rotation = -0.5934
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1585 keypoints.
+keypoint size = 1585 after unique().
+match: min dist = 19.5704
+pairwise: matches = 86
+inliers = 65
+ransac result: 0.0229413, -0.00531122, -0.0973263
+
+-- GraphicEnd::loop 82 --
+graphic end : robot in on 0.0414578, -0.0508079, rotation = -0.603356
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1685 keypoints.
+keypoint size = 1685 after unique().
+match: min dist = 21.7256
+pairwise: matches = 90
+inliers = 68
+ransac result: 0.0262708, -0.00879046, -0.10664
+
+-- GraphicEnd::loop 83 --
+graphic end : robot in on 0.0426836, -0.0554649, rotation = -0.61267
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1669 keypoints.
+keypoint size = 1669 after unique().
+match: min dist = 19.8242
+pairwise: matches = 60
+inliers = 44
+ransac result: 0.0295899, -0.00647899, -0.117986
+
+-- GraphicEnd::loop 84 --
+graphic end : robot in on 0.0467072, -0.0550519, rotation = -0.624016
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1649 keypoints.
+keypoint size = 1649 after unique().
+match: min dist = 21.6333
+pairwise: matches = 70
+inliers = 42
+ransac result: 0.0311008, -0.00628722, -0.128149
+
+-- GraphicEnd::loop 85 --
+graphic end : robot in on 0.0481216, -0.0556165, rotation = -0.634179
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1959 keypoints.
+keypoint size = 1959 after unique().
+match: min dist = 24.3926
+pairwise: matches = 79
+inliers = 57
+ransac result: 0.0413709, -0.00363225, -0.138699
+
+-- GraphicEnd::loop 86 --
+graphic end : robot in on 0.0583915, -0.0582723, rotation = -0.644729
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1764 keypoints.
+keypoint size = 1764 after unique().
+match: min dist = 25.4165
+pairwise: matches = 80
+inliers = 57
+ransac result: 0.0389519, -0.00365785, -0.150262
+
+-- GraphicEnd::loop 87 --
+graphic end : robot in on 0.0562633, -0.0571222, rotation = -0.656292
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1814 keypoints.
+keypoint size = 1814 after unique().
+match: min dist = 26.1725
+pairwise: matches = 77
+inliers = 48
+ransac result: 0.043946, -0.00293473, -0.158763
+result of RANSAC is too large.
+!<<<<<<<<<< manager2: generate new key frame!>>>>>>>>>>
+desp size of key frame is 431
+FeatureManager::Collecting input data...
+Step 1, compare new features to library
+total good matches : 5
+Step 2: RANSAC
+step 3, compare new features to buffer
+total good matches : 69
+good new feature:1809
+
+*** Feature Manager Report ***
+landmark library : 228
+landmark buffer : 3381
+Hit 5 landmarks in lib
+Hit 50 landmarks in buffer
+Add 49 landmark from buffer to lib
+Add 1740 new landmarks to buffer
+Delete 0 old landmarks from buffer
+*** Feature Manager Report ***
+
+Opt: add robot pose.
+add vertex 4
+pr = 0.0562633, -0.0571222, -0.656292
+1
+vertex exist
+add edge se2
+g2o: match size = 5
+g2o: add 4 new landmark, 5 observations.
+
+-- GraphicEnd::loop 88 --
+graphic end : robot in on 0.0562633, -0.0571222, rotation = -0.656292
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1698 keypoints.
+keypoint size = 1698 after unique().
+match: min dist = 8.88819
+pairwise: matches = 41
+inliers = 41
+ransac result: 0.00085801, -0.00180758, -0.00966625
+
+-- GraphicEnd::loop 89 --
+graphic end : robot in on 0.0558401, -0.0590778, rotation = -0.665959
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1721 keypoints.
+keypoint size = 1721 after unique().
+match: min dist = 13.4907
+pairwise: matches = 41
+inliers = 41
+ransac result: 0.00310046, 0.00167273, -0.0219172
+
+-- GraphicEnd::loop 90 --
+graphic end : robot in on 0.0597403, -0.0576888, rotation = -0.67821
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1729 keypoints.
+keypoint size = 1729 after unique().
+match: min dist = 14.7309
+pairwise: matches = 36
+inliers = 36
+ransac result: 0.0042419, -0.00485647, -0.0291989
+
+-- GraphicEnd::loop 91 --
+graphic end : robot in on 0.0566607, -0.0635581, rotation = -0.685491
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1653 keypoints.
+keypoint size = 1653 after unique().
+match: min dist = 13.9642
+pairwise: matches = 27
+inliers = 27
+ransac result: 0.00408946, -0.00559031, -0.0413851
+
+-- GraphicEnd::loop 92 --
+graphic end : robot in on 0.0560921, -0.0640465, rotation = -0.697678
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1693 keypoints.
+keypoint size = 1693 after unique().
+match: min dist = 14.3178
+pairwise: matches = 28
+inliers = 28
+ransac result: 0.00487544, -0.00980421, -0.0523535
+
+-- GraphicEnd::loop 93 --
+graphic end : robot in on 0.0541436, -0.0678646, rotation = -0.708646
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1907 keypoints.
+keypoint size = 1907 after unique().
+match: min dist = 17.3494
+pairwise: matches = 35
+inliers = 34
+ransac result: 0.0426932, 0.0116663, -0.0664495
+
+-- GraphicEnd::loop 94 --
+graphic end : robot in on 0.097206, -0.0739301, rotation = -0.722742
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1752 keypoints.
+keypoint size = 1752 after unique().
+match: min dist = 20.2485
+pairwise: matches = 43
+inliers = 42
+ransac result: 0.0194956, -0.00622869, -0.0736423
+
+-- GraphicEnd::loop 95 --
+graphic end : robot in on 0.0679082, -0.0739528, rotation = -0.729935
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1764 keypoints.
+keypoint size = 1764 after unique().
+match: min dist = 23.1733
+pairwise: matches = 38
+inliers = 34
+ransac result: 0.0152126, -0.00299348, -0.0866528
+
+-- GraphicEnd::loop 96 --
+graphic end : robot in on 0.0664891, -0.0687763, rotation = -0.742945
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1743 keypoints.
+keypoint size = 1743 after unique().
+match: min dist = 20.6882
+pairwise: matches = 24
+inliers = 20
+ransac result: -0.0150424, -0.0209038, -0.0947362
+
+-- GraphicEnd::loop 97 --
+graphic end : robot in on 0.0315907, -0.0645048, rotation = -0.751029
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1645 keypoints.
+keypoint size = 1645 after unique().
+match: min dist = 22
+pairwise: matches = 22
+inliers = 22
+ransac result: -0.020921, -0.0259214, -0.105769
+
+-- GraphicEnd::loop 98 --
+graphic end : robot in on 0.0238716, -0.0648931, rotation = -0.762061
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1706 keypoints.
+keypoint size = 1706 after unique().
+match: min dist = 25.2587
+pairwise: matches = 26
+inliers = 26
+ransac result: 0.0159379, -0.0131812, -0.116023
+
+-- GraphicEnd::loop 99 --
+graphic end : robot in on 0.0608473, -0.0772902, rotation = -0.772315
+grabbing features, detector is FAST
+descriptor is SIFT
+detect 1743 keypoints.
+keypoint size = 1743 after unique().
+match: min dist = 18.7617
+pairwise: matches = 11
+inliers = 11
+ransac result: 0.0366261, 0.00646654, -0.13189

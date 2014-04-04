@@ -26,7 +26,8 @@ GraphicEnd::GraphicEnd()
                                          -atoi(g_pParaReader->GetPara("del_not_seen").c_str()));
 
     pFeatureManager2 = new FeatureManager2( pFeatureGrabber,
-                                            pImageReader);
+                                            pImageReader,
+                                            pFeatureManager);
     
     if (vision == true)
     {
@@ -43,16 +44,17 @@ GraphicEnd::~GraphicEnd()
     delete pFeatureGrabber;
     delete pFeatureManager;
     delete pFeatureManager2;
+    delete g_pParaReader;
 }
 
 int GraphicEnd::run()
 {
-
     return 1;
 }
 
 int GraphicEnd::run_once()
 {
+    _need_global_optimization = false;
     _success = false;
     stringstream ss;
     string logfile;
@@ -84,7 +86,12 @@ int GraphicEnd::run_once()
 
     //将当前图像的特征与机器人位置传送至特征数据库
     //pFeatureManager->Input(keyPoints, desc, _robot_curr);
-    pFeatureManager2->Input(keyPoints, desc, _robot_curr, _loops);
+    try {
+        pFeatureManager2->Input(keyPoints, desc, _robot_curr, _loops);
+    } catch (GRAPHIC_END_NEED_GLOBAL_OPTIMIZATION e) {
+        e.disp();
+        _need_global_optimization = true;
+    }
     
     if (vision == true)
     {
@@ -124,7 +131,7 @@ void GraphicEnd::drawRobot(Mat& img)
     circle(img, p, 10, Scalar(255, 0, 0), 1);
 
     //转角信息
-    double alpha = -3.1415926/2-_robot_curr[2];
-    Point2f p2( p.x + 30*cos(alpha), p.y + 10 * sin(alpha) );
+    double alpha = -PI/2-_robot_curr[2];
+    Point2f p2( p.x + 20*cos(alpha), p.y + 20 * sin(alpha) );
     line(img, p, p2, Scalar(255,0,0), 1);
 }

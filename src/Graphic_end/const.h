@@ -5,8 +5,10 @@
 #pragma once
 #include <string>
 #include <opencv2/core/core.hpp>
+#include <g2o/types/slam2d/se2.h>
 #include <Eigen/Core>
 #include <iostream>
+using namespace g2o;
 using namespace cv;
 using namespace std;
 
@@ -39,9 +41,10 @@ const int LANDMARK_START_ID = 10000; //暂定，这样最多只能处理10000帧
 const double landmarkNoiseX = 0.05, landmarkNoiseXL = 2, landmarkNoiseY = 0.05;   //路标点测量的噪声估计值，认为x方向超过最大距离时，误差很大，否则误差约在cm级别
 const double transNoiseX = 0.005, transNoiseY = 0.005; //惯性测量设备误差
 const double rotationNoise = 0.05;//角度测量设备误差
-const bool add_ransac_odo = false; //是否以ransac结果作为惯性测量设备的输出
+const bool add_ransac_odo = true; //是否以ransac结果作为惯性测量设备的输出
 const bool robust_kernel = true; //是否使用鲁棒化的优化核
 const int max_match_per_loop = 50;  //每一帧最多增长多少个边
+const int solver_per_loops = 5;  //
 //////////////////////////////////////////
 //内联工具函数
 inline int ROBOT_ID(int& id)
@@ -67,6 +70,19 @@ inline Eigen::Vector3d cv2g2o(Point3f p)
     return Eigen::Vector3d(p.z, -p.x, -p.y);
 }
 
+inline double diff_SE2(const SE2& p1, const SE2& p2)
+{
+    SE2 a = p1.inverse()*p2;
+    double d = fabs(a[0]) + fabs(a[1]);
+    double angle = a[2];
+    if (angle < -PI/2)
+        angle += PI;
+    if (angle > PI/2)
+        angle -= PI;
+    d += fabs(angle);
+    return d;
+}
+
 //异常类
 class EXCEPTION
 {
@@ -84,6 +100,13 @@ class EXCEPTION
 class RANSAC_CANNOT_FIND_ENOUGH_INLIERS: public EXCEPTION
 {
  public: RANSAC_CANNOT_FIND_ENOUGH_INLIERS() : EXCEPTION("RANSAC failed because cannot find enough inliers.") {
+        
+    }
+};
+
+class GRAPHIC_END_NEED_GLOBAL_OPTIMIZATION : public EXCEPTION
+{
+ public: GRAPHIC_END_NEED_GLOBAL_OPTIMIZATION()  : EXCEPTION("Graphic end find a keyframe and need to call g2o to perform a global optimization.") {
         
     }
 };

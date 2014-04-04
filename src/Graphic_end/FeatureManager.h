@@ -110,10 +110,14 @@ class FeatureManager
 class FeatureManager2
 {
  public:
-    FeatureManager2(FeatureGrabberBase* p, ImageReaderBase* pi);
+    FeatureManager2(FeatureGrabberBase* p, ImageReaderBase* pi, FeatureManager* pf);
     ~FeatureManager2();
 
     void Input( vector<KeyPoint>& keypoints, Mat feature_descriptor, SE2& robot_curr, int frame_id);
+    void setKeyFramePos( SE2 s )
+    {
+        _keyFrame_pos = s;
+    }
   
  protected:
     int pairwiseAlign(vector<KeyPoint>& keypoints, Mat feature_descriptor, SE2& robot_curr);
@@ -122,12 +126,15 @@ class FeatureManager2
     
  protected:
     int _keyFrame_id; //关键帧的id
+    int _landmark_id; //路标点的id，会随着路标增加不断递增
     vector<LANDMARK> _kf_landmarks;  //关键帧的landmarks
+    vector<DMatch> _correctMatches;  //
     Mat kf_desp;
     SE2 _keyFrame_pos;   //关键帧的位姿
 
     FeatureGrabberBase* _pFeatureGrabber;
     ImageReaderBase* _pImageReader;
+    FeatureManager* _pFeatureManager; // used as global estimate.
 
     //显示数据
     Mat _keyFrame_rgb;

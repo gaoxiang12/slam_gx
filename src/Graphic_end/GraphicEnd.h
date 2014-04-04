@@ -37,5 +37,6 @@ class GraphicEnd
     int _loops;
     bool _success;        //标记当前循环是否成功匹配到特征
     int _step_time;
+    bool _need_global_optimization;
 };
 
