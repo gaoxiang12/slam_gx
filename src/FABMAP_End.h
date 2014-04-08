@@ -7,7 +7,11 @@ using namespace std;
 
 struct PLACE_RECOG
 {
+    PLACE_RECOG() {
+        id = 0; similar = 0; prob = 0.0; isNewPlace=true;
+    }
     int id;
+    int similar;
     double prob;
     bool isNewPlace;
 };
@@ -21,5 +25,7 @@ class FABMAP_End
     
  protected:
     CFABMAPClient _engine;
-    map<int, int> _frame_place; //each frame must have a place id
+    map<int, int> _frame_place; //二元组，第一个元素为帧id，第二个为place的id
 };
+
+extern FABMAP_End* g_pFAB;

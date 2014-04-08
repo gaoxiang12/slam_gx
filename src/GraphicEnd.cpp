@@ -2,6 +2,7 @@
 #include "const.h"
 #include "FeatureGrabber.h"
 #include "ParameterReader.h"
+#include "FABMAP_End.h"
 
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/core/core.hpp>
@@ -16,6 +17,8 @@ using namespace cv;
 GraphicEnd::GraphicEnd()
 {
     g_pParaReader = new ParameterReader(parameter_file_addr);
+    g_pFAB = new FABMAP_End();
+    
     pImageReader = new ImageReader(parameter_file_addr);
     pFeatureGrabber = new FeatureGrabber(
                                          g_pParaReader->GetPara("detector_name"),
@@ -91,6 +94,13 @@ int GraphicEnd::run_once()
     } catch (GRAPHIC_END_NEED_GLOBAL_OPTIMIZATION e) {
         e.disp();
         _need_global_optimization = true;
+        g_pFAB->process( pImageReader->GetCurrentFileName(), _loops );
+        ss.clear();
+        string s;
+        ss<<"keyframe/"<<_loops<<".bmp";
+        ss>>s;
+        cout<<"save to "<<s<<endl;
+        imwrite(s, rgb);
     }
     
     if (vision == true)

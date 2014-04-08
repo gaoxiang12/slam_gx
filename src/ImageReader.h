@@ -21,6 +21,8 @@ class ImageReaderBase
         return Mat();
     }
 
+    virtual int GetCurrentIndex() const =0;
+    virtual string GetCurrentFileName() const =0;
 };
 
 
@@ -35,7 +37,12 @@ class ImageReader: public ImageReaderBase
     virtual bool IsEnd() const {
         return _index_curr > _end_index;
     }
-
+    virtual int GetCurrentIndex() const {
+        return _index_curr-1; //因为每次都是先调Next，然后再调这个函数，所以要减1
+    }
+    virtual string GetCurrentFileName() const {
+        return _filename;
+    }
     virtual Mat GetRGB() {
         return _rgb;
     }
@@ -52,4 +59,6 @@ class ImageReader: public ImageReaderBase
 
     string _data_source;
     bool _grayscale;
+
+    string _filename;
 };

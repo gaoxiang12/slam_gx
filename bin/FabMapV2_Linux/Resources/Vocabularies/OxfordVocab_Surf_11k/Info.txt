@@ -1,0 +1,1 @@
+These files specify the visual vocabulary and Chow-Liu tree vocabulary model used by the system.

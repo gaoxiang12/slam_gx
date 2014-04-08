@@ -1,0 +1,15 @@
+Mode: FABMAP_CHOW_LIU
+Geometric Rerank: OFF
+p(observe | exists) = 0.39
+p(observe | !exists) = 0.05
+p(at new place) = 0.9
+Likelihood Smoothing Factor: 0.99
+Prior: Previous Position + Motion Model
+Motion Model: Always Move, Bias Forward (0.8)
+Sampler: REAL SAMPLES
+Minimum Number Of Samples Used: 2859
+Data Association: OFF
+Keyframe Detector: NONE
+Disallow Local Matches: OFF
+Images Processed: All
+Blob Response Filter: 25
