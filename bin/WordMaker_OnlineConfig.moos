@@ -1,0 +1,51 @@
+ProcessConfig = pWordMaker
+{
+	Mode = ONLINE	//Mode can be ONLINE or BATCH
+					//ONLINE listens for images to be posted by a client, then converts them to words
+					//BATCH mode, you specify a directory full of images (any image format is OK), and it outputs bag-of-words files for each image
+
+	//Where is the Vocab?
+    VocabPath = ../Resources/Vocabularies/OxfordVocab_Surf_11k/
+	VocabName = OxfordVocab_Surf_11k
+
+    //////////////////////////////////////////////////
+    // Parameters below control logging
+    // They're optional when running in online mode.
+
+	//Where do we want to place the output?
+    //By default output is placed in subdirectories of this path
+    //BaseDataPath = ../Sample_Data
+
+    //Do we want to write out .surf files?
+    WriteDescriptors = FALSE
+    //Where to write out the .surf files to?
+    //By default we assume BaseDataPath/Surf
+    //Specifying a DescriptorOutputPath overrides the default
+	//DescriptorPath =  ../Sample_Data/Surf
+
+	//Do we want to write out .words files?
+    WriteWords = FALSE
+    //Where to write out the .words files to?
+    //By default we assume BaseDataPath/Words_VocabName
+    //Specifying a WordOutputPath overrides the default
+	//WordOutputPath = ../Sample_Data/Words_OxfordVocab_Surf_11k/
+
+    //The .oxs file is an index file that records the 
+    //bag-of-words for each image in the directory we're processing
+	//OXS gets output to the BaseData path
+    WriteOXS = FALSE
+
+	//SURF Parameters
+    //The vocabulary has been learned with the following parameters
+    //Changing these parameters requires learning a new vocabulary
+	SURFThres = 25.0		//Blob response threshold. 25.0 yields 50-500 interest points per image
+	SURFUpright = true		//Set true to turn off rotation invariance
+	SURF128 = true			//Set true to compute longer 128-dimensional discriptors.
+
+
+  	//MoosDB contact details
+    //If the MOOSDB is running on a different PC, specify IP address and port here
+	ServerHost = localhost
+	ServerPort = 9000
+   	ImageMessageName = FABMAP_INPUT
+}

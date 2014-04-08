@@ -3,4 +3,6 @@ lib
 bin
 log*
 debug*
-
+g2o*
+p3d.txt
+*.g2o
