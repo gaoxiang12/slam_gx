@@ -36,3 +36,6 @@ optimize_step: 10
 robust_kernel: Cauchy
 # 最大位移，超过此位移后需要全局优化,超过此位移后认为出现关键帧
 max_pos_change: 0.3
+
+# 是否在线生成点云图（较耗时间）
+online_pcl: yes 

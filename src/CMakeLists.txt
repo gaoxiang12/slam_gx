@@ -1,17 +1,20 @@
 MESSAGE(STATUS "Configuring Graphic end..."})
 MESSAGE(STATUS "CSparse is in :" ${CSPARSE_LIBS} )
 FIND_PACKAGE( OpenCV REQUIRED )
-INCLUDE_DIRECTORIES(${G2O_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIR} ${CSPARSE_INCLUDE_DIR})
+find_package(PCL 1.4 REQUIRED)
+
+INCLUDE_DIRECTORIES(${G2O_INCLUDE_DIR} ${EIGEN3_INCLUDE_DIR} ${CSPARSE_INCLUDE_DIR} ${PCL_INCLUDE_DIRS})
+LINK_LIBRARIES(${PCL_LIBRARY_DIRS})
 
 # Build Library
 # Graphic end
 SET(MOOS_LIBS MOOS MOOSGen MOOSUtility )
 
 ADD_LIBRARY(graphicend
-  ImageReader.cpp GraphicEnd.cpp FeatureGrabber.cpp FeatureManager.cpp ParameterReader.cpp FeatureManager2.cpp fabmap.cpp)
+  ImageReader.cpp GraphicEnd.cpp FeatureGrabber.cpp FeatureManager.cpp ParameterReader.cpp FeatureManager2.cpp fabmap.cpp PCL_End.cpp)
 
 TARGET_LINK_LIBRARIES( graphicend
-  ${OpenCV_LIBS} yaml-cpp g2o_core ${MOOS_LIBS} pthread)
+  ${OpenCV_LIBS} yaml-cpp g2o_core ${MOOS_LIBS} pthread ${PCL_LIBRARIES})
 
 # SLAM back end
 ADD_LIBRARY(slamend

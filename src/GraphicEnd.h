@@ -5,7 +5,7 @@
 #include "ImageReader.h"
 #include "FeatureGrabber.h"
 #include "FeatureManager.h"
-
+#include "PCL_End.h"
 #include <g2o/types/slam2d/se2.h>
 
 using namespace g2o;
@@ -31,7 +31,7 @@ class GraphicEnd
     FeatureGrabberBase* pFeatureGrabber;
     FeatureManager* pFeatureManager;
     FeatureManager2* pFeatureManager2;
-    
+    PCL_End* pPCLEnd;
     SE2 _robot_curr;      //当前机器人所在位置
 
     int _loops;

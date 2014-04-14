@@ -16,3 +16,5 @@ rm ransac_keypoint.txt
 rm keypoint.txt
 rm kp.txt
 rm p3d.txt
+rm keyframe/*
+rm final.pcd

@@ -16,8 +16,9 @@ using namespace cv;
 
 GraphicEnd::GraphicEnd()
 {
+    cout<<"construct graphic end"<<endl;
     g_pParaReader = new ParameterReader(parameter_file_addr);
-    g_pFAB = new FABMAP_End();
+    //g_pFAB = new FABMAP_End();
     
     pImageReader = new ImageReader(parameter_file_addr);
     pFeatureGrabber = new FeatureGrabber(
@@ -31,6 +32,9 @@ GraphicEnd::GraphicEnd()
     pFeatureManager2 = new FeatureManager2( pFeatureGrabber,
                                             pImageReader,
                                             pFeatureManager);
+    
+    cout<<"set up pcl end"<<endl;
+    pPCLEnd = new PCL_End(g_pParaReader->GetPara("data_source"));
     
     if (vision == true)
     {
@@ -47,7 +51,10 @@ GraphicEnd::~GraphicEnd()
     delete pFeatureGrabber;
     delete pFeatureManager;
     delete pFeatureManager2;
+    delete pPCLEnd;
+    
     delete g_pParaReader;
+    //delete g_pFAB;
 }
 
 int GraphicEnd::run()
@@ -94,13 +101,16 @@ int GraphicEnd::run_once()
     } catch (GRAPHIC_END_NEED_GLOBAL_OPTIMIZATION e) {
         e.disp();
         _need_global_optimization = true;
-        g_pFAB->process( pImageReader->GetCurrentFileName(), _loops );
+        //g_pFAB->process( pImageReader->GetCurrentFileName(), _loops );
+        pPCLEnd->addInput(pImageReader->GetCurrentIndex(), _robot_curr);
+        pPCLEnd->save();
         ss.clear();
         string s;
-        ss<<"keyframe/"<<_loops<<".bmp";
+        ss<<"keyframe/"<<pImageReader->GetCurrentIndex()<<".bmp";
         ss>>s;
         cout<<"save to "<<s<<endl;
         imwrite(s, rgb);
+        
     }
     
     if (vision == true)
@@ -135,7 +145,7 @@ void GraphicEnd::drawRobot(Mat& img)
 {
     rectangle( img, Point2f(400, 350), Point2f(500, 450), Scalar(255,0,0), 3 );
     
-    Point2f p(450+_robot_curr[0]*20, 400+_robot_curr[1]*20);
+    Point2f p(450-_robot_curr[1]*20, 400-_robot_curr[0]*20);
     //位置信息
     circle(img, Point2f(450,400), 2, Scalar(0, 0, 255), 2);
     circle(img, p, 10, Scalar(255, 0, 0), 1);
